@@ -10,11 +10,8 @@ import 'package:sb_portal/ui/dashboard/model/MyProfileModel.dart';
 import 'package:sb_portal/ui/dashboard/provider/HomeProvider.dart';
 import 'package:sb_portal/ui/dashboard/view/EditProfileScreen.dart';
 import 'package:sb_portal/ui/dashboard/view/SellerChangePasswordScreen.dart';
-import 'package:sb_portal/ui/dashboard/view/widgets/SideMenu.dart';
 import 'package:sb_portal/utils/NavKey.dart';
 import 'package:sb_portal/utils/app_colors.dart';
-import 'package:sb_portal/utils/app_font.dart';
-import 'package:sb_portal/utils/app_images.dart';
 import 'package:sb_portal/utils/app_string.dart';
 
 class MyProfileScreen extends StatefulWidget {
@@ -49,14 +46,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                         decoration: BoxDecoration(
                           color: AppColors.colorLightBlueGrey,
-                          border: Border.all(
-                              color: AppColors.colorBorder, width: 1.0),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(8)),
+                          border: Border.all(color: AppColors.colorBorder, width: 1.0),
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,12 +86,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                       primary: Colors.black,
                                     ),
                                     onPressed: () {
-                                      NavKey.navKey.currentState!
-                                          .push(MaterialPageRoute(
-                                              builder: (_) => EditProfileScreen(
-                                                    myProfileModel:
-                                                        myProfileModel,
-                                                  )));
+                                      NavKey.navKey.currentState!.push(MaterialPageRoute(
+                                          builder: (_) => EditProfileScreen(
+                                                myProfileModel: myProfileModel,
+                                              )));
                                     },
                                     child: Row(
                                       children: [
@@ -225,16 +217,19 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    SizedBox(height: 2,),
+                                    SizedBox(
+                                      height: 2,
+                                    ),
                                     Container(
                                       height: 1,
                                       width: 54,
                                       color: Colors.black,
                                     ),
-                                    SizedBox(height: 1,),
+                                    SizedBox(
+                                      height: 1,
+                                    ),
                                     Text(
-                                      myProfileModel
-                                          .results!.profile!.district!,
+                                      myProfileModel.results!.profile!.district!,
                                       style: TextStyle(
                                         fontFamily: "InterMedium",
                                         fontSize: 14,
@@ -254,13 +249,17 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                     SizedBox(height: 2,),
+                                    SizedBox(
+                                      height: 2,
+                                    ),
                                     Container(
                                       height: 1,
                                       width: 54,
                                       color: Colors.black,
                                     ),
-                                    SizedBox(height: 1,),
+                                    SizedBox(
+                                      height: 1,
+                                    ),
                                     Text(
                                       myProfileModel.results!.profile!.state!,
                                       style: TextStyle(
@@ -282,13 +281,17 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                     SizedBox(height: 2,),
+                                    SizedBox(
+                                      height: 2,
+                                    ),
                                     Container(
                                       height: 1,
                                       width: 54,
                                       color: Colors.black,
                                     ),
-                                    SizedBox(height: 1,),
+                                    SizedBox(
+                                      height: 1,
+                                    ),
                                     Text(
                                       myProfileModel.results!.profile!.country!,
                                       style: TextStyle(
@@ -317,19 +320,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                         onPressed: null,
                                         child: Text(
                                           'CHANGE PASSWORD',
-                                          style: TextStyle(
-                                              fontFamily: "InterMedium",
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white),
+                                          style: TextStyle(fontFamily: "InterMedium", fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
                                         )),
                                   ),
                                 ),
                                 onTap: () {
-                                  NavKey.navKey.currentState!.push(
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              const SellerChangePasswordScreen()));
+                                  NavKey.navKey.currentState!.push(MaterialPageRoute(builder: (_) => const SellerChangePasswordScreen()));
                                 },
                               ),
                             ),
@@ -348,8 +344,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   callMyProfileApi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
       mHomeProvider!.getUserProfile().then((value) {
         if (value != null) {
           try {
