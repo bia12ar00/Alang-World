@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sb_portal/ui/dashboard/view/buyer/BuyerHomeScreenNavigation.dart';
 import 'package:sb_portal/ui/dashboard/view/buyer/BuyerSideMenu.dart';
+import 'package:sb_portal/ui/dashboard/view/notification.dart';
 import 'package:sb_portal/utils/NavKey.dart';
 import 'package:sb_portal/utils/app_colors.dart';
 import 'package:sb_portal/utils/app_font.dart';
@@ -34,11 +35,20 @@ class _BuyerAlangWorldScreenState extends State<BuyerAlangWorldScreen> {
                       Scaffold.of(context).openDrawer();
                     },
                   ),
-                  Expanded(child: Image.asset(APPImages.IC_SPLASH_LOGO, height: 73, width: 73,)),
+                  Expanded(
+                      child: Image.asset(
+                    APPImages.IC_SPLASH_LOGO,
+                    height: 73,
+                    width: 73,
+                  )),
                   IconButton(
                     color: Colors.black,
                     icon: const Icon(Icons.notifications),
-                    onPressed: () {},
+                    onPressed: () {
+                      NavKey.navKey.currentState!.push(
+                        MaterialPageRoute(builder: (_) => NotificationPage()),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -49,8 +59,12 @@ class _BuyerAlangWorldScreenState extends State<BuyerAlangWorldScreen> {
         body: AboutUsBody(),
         bottomNavigationBar: BottomNavigationBar(
           onTap: (_position) {
-            NavKey.navKey.currentState!.pushAndRemoveUntil(MaterialPageRoute(builder: (_) =>
-                BuyerHomeScreenNavigation(selectedIndex: _position,)), (route) => false);
+            NavKey.navKey.currentState!.pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (_) => BuyerHomeScreenNavigation(
+                          selectedIndex: _position,
+                        )),
+                (route) => false);
           },
           showSelectedLabels: false,
           selectedItemColor: AppColors.colorWhite,
@@ -61,15 +75,24 @@ class _BuyerAlangWorldScreenState extends State<BuyerAlangWorldScreen> {
           showUnselectedLabels: false,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home, size: 32,),
+              icon: Icon(
+                Icons.home,
+                size: 32,
+              ),
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search,  size: 32,),
+              icon: Icon(
+                Icons.search,
+                size: 32,
+              ),
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle,  size: 32,),
+              icon: Icon(
+                Icons.account_circle,
+                size: 32,
+              ),
               label: '',
             ),
           ],

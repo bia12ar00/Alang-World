@@ -50,6 +50,7 @@ dependencies:
   shared_preferences: ^2.0.7
   url_launcher: ^6.0.20
   webview_flutter: ^2.0.13
+  flutter_image_slideshow: ^0.1.2
 
 dependency_overrides:
   firebase_messaging_platform_interface: 3.1.6

@@ -23,7 +23,9 @@ Future callGetMethod(BuildContext mContext, String url) async {
   printWrapped("baseUrl--" + APPStrings.baseUrl + url);
   printWrapped("timezone--" + _timezone);
 
-  return await http.get(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders).then((http.Response response) {
+  return await http
+      .get(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders)
+      .then((http.Response response) {
     return getResponse(response);
   });
 }
@@ -31,10 +33,26 @@ Future callGetMethod(BuildContext mContext, String url) async {
 Future callGetMethodToken(BuildContext mContext, String url) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
   printWrapped("baseUrl--" + APPStrings.baseUrl + url);
 
-  return await http.get(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders).then((http.Response response) {
+  return await http
+      .get(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders)
+      .then((http.Response response) {
+    return getResponse(response);
+  });
+}
+
+Future callGetMethodWithOutToken(BuildContext mContext, String url) async {
+  String _timezone = await FlutterNativeTimezone.getLocalTimezone();
+  commonHeaders['timezone'] = _timezone;
+
+  printWrapped("baseUrl--" + APPStrings.baseUrl + url);
+
+  return await http
+      .get(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders)
+      .then((http.Response response) {
     return getResponse(response);
   });
 }
@@ -42,10 +60,13 @@ Future callGetMethodToken(BuildContext mContext, String url) async {
 Future callDeleteMethodToken(BuildContext mContext, String url) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
   printWrapped("baseUrl--" + APPStrings.baseUrl + url);
 
-  return await http.delete(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders).then((http.Response response) {
+  return await http
+      .delete(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders)
+      .then((http.Response response) {
     return getResponse(response);
   });
   /* return await http
@@ -55,7 +76,8 @@ Future callDeleteMethodToken(BuildContext mContext, String url) async {
   });*/
 }
 
-Future callPostMethod(BuildContext mContext, String url, Map<String, dynamic> params) async {
+Future callPostMethod(
+    BuildContext mContext, String url, Map<String, dynamic> params) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
   try {
@@ -64,80 +86,110 @@ Future callPostMethod(BuildContext mContext, String url, Map<String, dynamic> pa
   printWrapped("baseUrl--" + APPStrings.baseUrl + url);
   printWrapped("baseUrl--body-" + params.toString());
 
-  return await http.post(Uri.parse(APPStrings.baseUrl + url), body: params, headers: commonHeaders).then((http.Response response) {
+  return await http
+      .post(Uri.parse(APPStrings.baseUrl + url),
+          body: params, headers: commonHeaders)
+      .then((http.Response response) {
     return getResponse(response);
   });
 }
 
-Future callPostMethodWithToken(BuildContext mContext, String url, Map<String, dynamic> params) async {
+Future callPostMethodWithToken(
+    BuildContext mContext, String url, Map<String, dynamic> params) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
 
-  printWrapped("Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
+  printWrapped(
+      "Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
   printWrapped("baseUrl--" + APPStrings.baseUrl + url);
   printWrapped("baseUrl--body-" + params.toString());
   printWrapped("baseUrl--commonHeaders-" + commonHeaders.toString());
 
-  return await http.post(Uri.parse(APPStrings.baseUrl + url), body: params, headers: commonHeaders).then((http.Response response) {
+  return await http
+      .post(Uri.parse(APPStrings.baseUrl + url),
+          body: params, headers: commonHeaders)
+      .then((http.Response response) {
     return getResponse(response);
   });
 }
 
-Future callPostMethodWithTokenWithoutParam(BuildContext mContext, String url) async {
+Future callPostMethodWithTokenWithoutParam(
+    BuildContext mContext, String url) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
 
-  printWrapped("Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
+  printWrapped(
+      "Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
   printWrapped("baseUrl--" + APPStrings.baseUrl + url);
   printWrapped("baseUrl--commonHeaders-" + commonHeaders.toString());
 
-  return await http.post(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders).then((http.Response response) {
+  return await http
+      .post(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders)
+      .then((http.Response response) {
     return getResponse(response);
   });
 }
 
-Future callPostMethodWithTokenWithOutParam(BuildContext mContext, String url) async {
+Future callPostMethodWithTokenWithOutParam(
+    BuildContext mContext, String url) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
 
-  printWrapped("Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
+  printWrapped(
+      "Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
   printWrapped("baseUrl--" + APPStrings.baseUrl + url);
   // printWrapped("baseUrl--body-" + params.toString());
   printWrapped("baseUrl--commonHeaders-" + commonHeaders.toString());
 
-  return await http.post(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders).then((http.Response response) {
+  return await http
+      .post(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders)
+      .then((http.Response response) {
     return getResponse(response);
   });
 }
 
-Future callPutMethodWithToken(BuildContext mContext, String url, Map<String, dynamic> params) async {
+Future callPutMethodWithToken(
+    BuildContext mContext, String url, Map<String, dynamic> params) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
 
-  printWrapped("Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
+  printWrapped(
+      "Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
   printWrapped("baseUrl--" + APPStrings.baseUrl + url);
   printWrapped("baseUrl--body-" + params.toString());
   printWrapped("baseUrl--commonHeaders-" + commonHeaders.toString());
 
-  return await http.put(Uri.parse(APPStrings.baseUrl + url), body: params, headers: commonHeaders).then((http.Response response) {
+  return await http
+      .put(Uri.parse(APPStrings.baseUrl + url),
+          body: params, headers: commonHeaders)
+      .then((http.Response response) {
     return getResponse(response);
   });
 }
 
-Future callPutMethodWithTokenWithOutBody(BuildContext mContext, String url) async {
+Future callPutMethodWithTokenWithOutBody(
+    BuildContext mContext, String url) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
 
-  printWrapped("Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
+  printWrapped(
+      "Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
   printWrapped("baseUrl--" + APPStrings.baseUrl + url);
   printWrapped("baseUrl--commonHeaders-" + commonHeaders.toString());
 
-  return await http.put(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders).then((http.Response response) {
+  return await http
+      .put(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders)
+      .then((http.Response response) {
     return getResponse(response);
   });
 }
@@ -145,13 +197,17 @@ Future callPutMethodWithTokenWithOutBody(BuildContext mContext, String url) asyn
 Future callDeleteMethodWithToken(BuildContext mContext, String url) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
 
-  printWrapped("Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
+  printWrapped(
+      "Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
   printWrapped("baseUrl--" + APPStrings.baseUrl + url);
   printWrapped("baseUrl--commonHeaders-" + commonHeaders.toString());
 
-  return await http.delete(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders).then((http.Response response) {
+  return await http
+      .delete(Uri.parse(APPStrings.baseUrl + url), headers: commonHeaders)
+      .then((http.Response response) {
     return getResponse(response);
   });
 }
@@ -166,13 +222,15 @@ clearData() async {
       (route) => false);
 }
 
-Future callPostMethodWithImage(BuildContext mContext, String url, Map<String, String> params, String image) async {
+Future callPostMethodWithImage(BuildContext mContext, String url,
+    Map<String, String> params, String image) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
 
   printWrapped("baseUrl--" + APPStrings.baseUrl + url);
   printWrapped("baseUrl--body-" + params.toString());
-  var request = http.MultipartRequest('POST', Uri.parse(APPStrings.baseUrl + url));
+  var request =
+      http.MultipartRequest('POST', Uri.parse(APPStrings.baseUrl + url));
   request.files.add(await http.MultipartFile.fromPath("profile", image));
   request.headers.addAll(commonHeaders);
   request.fields.addAll(params);
@@ -181,17 +239,21 @@ Future callPostMethodWithImage(BuildContext mContext, String url, Map<String, St
   return getResponse(response);
 }
 
-Future callPostMethodWithMultipleImage(BuildContext mContext, String url, Map<String, String> params, List<String> listOfImage) async {
+Future callPostMethodWithMultipleImage(BuildContext mContext, String url,
+    Map<String, String> params, List<String> listOfImage) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
 
   printWrapped("baseUrl--" + APPStrings.baseUrl + url);
   printWrapped("Header--" + commonHeaders.toString());
   printWrapped("baseUrl--body-" + params.toString());
-  var request = http.MultipartRequest('POST', Uri.parse(APPStrings.baseUrl + url));
+  var request =
+      http.MultipartRequest('POST', Uri.parse(APPStrings.baseUrl + url));
   for (int i = 0; i < listOfImage.length; i++) {
-    request.files.add(await http.MultipartFile.fromPath("image${i + 1}", listOfImage[i]));
+    request.files.add(
+        await http.MultipartFile.fromPath("image${i + 1}", listOfImage[i]));
   }
   request.headers.addAll(commonHeaders);
   request.fields.addAll(params);
@@ -200,31 +262,40 @@ Future callPostMethodWithMultipleImage(BuildContext mContext, String url, Map<St
   return getResponse(response);
 }
 
-Future callPutMethodWithTokenWithOutImageWithModel(BuildContext mContext, String url, dynamic params) async {
+Future callPutMethodWithTokenWithOutImageWithModel(
+    BuildContext mContext, String url, dynamic params) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
 
-  printWrapped("Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
+  printWrapped(
+      "Bearer--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
   printWrapped("baseUrl--" + APPStrings.baseUrl + url);
   printWrapped("baseUrl--body-" + json.encode(params));
   printWrapped("baseUrl--commonHeaders-" + commonHeaders.toString());
 
   var body = json.encode(params);
 
-  return await http.put(Uri.parse(APPStrings.baseUrl + url), body: body, headers: commonHeaders).then((http.Response response) {
+  return await http
+      .put(Uri.parse(APPStrings.baseUrl + url),
+          body: body, headers: commonHeaders)
+      .then((http.Response response) {
     return getResponse(response);
   });
 }
 
-Future callPostMethodWithVideoWithToken(BuildContext mContext, String url, Map<String, String> params, String video) async {
+Future callPostMethodWithVideoWithToken(BuildContext mContext, String url,
+    Map<String, String> params, String video) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
 
   print("baseUrl--" + APPStrings.baseUrl + url);
   print("baseUrl--body-" + params.toString());
-  var request = http.MultipartRequest('POST', Uri.parse(APPStrings.baseUrl + url));
+  var request =
+      http.MultipartRequest('POST', Uri.parse(APPStrings.baseUrl + url));
   request.files.add(await http.MultipartFile.fromPath("files", video));
   request.headers.addAll(commonHeaders);
   request.fields.addAll(params);
@@ -233,14 +304,17 @@ Future callPostMethodWithVideoWithToken(BuildContext mContext, String url, Map<S
   return getResponse(response);
 }
 
-Future callPostMethodWithImageWithToken(BuildContext mContext, String url, Map<String, String> params, String image) async {
+Future callPostMethodWithImageWithToken(BuildContext mContext, String url,
+    Map<String, String> params, String image) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
 
   print("baseUrl--" + APPStrings.baseUrl + url);
   print("baseUrl--body-" + params.toString());
-  var request = http.MultipartRequest('POST', Uri.parse(APPStrings.baseUrl + url));
+  var request =
+      http.MultipartRequest('POST', Uri.parse(APPStrings.baseUrl + url));
   request.files.add(await http.MultipartFile.fromPath("profile", image));
   request.headers.addAll(commonHeaders);
   request.fields.addAll(params);
@@ -249,15 +323,18 @@ Future callPostMethodWithImageWithToken(BuildContext mContext, String url, Map<S
   return getResponse(response);
 }
 
-Future callPutMethodWithImageWithToken(BuildContext mContext, String url, Map<String, String> params, String image) async {
+Future callPutMethodWithImageWithToken(BuildContext mContext, String url,
+    Map<String, String> params, String image) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
 
   print("baseUrl--" + APPStrings.baseUrl + url);
   print("token--" + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
   print("baseUrl--body-" + params.toString());
-  var request = http.MultipartRequest('PUT', Uri.parse(APPStrings.baseUrl + url));
+  var request =
+      http.MultipartRequest('PUT', Uri.parse(APPStrings.baseUrl + url));
   request.files.add(await http.MultipartFile.fromPath("image", image));
   request.headers.addAll(commonHeaders);
   request.fields.addAll(params);
@@ -266,19 +343,23 @@ Future callPutMethodWithImageWithToken(BuildContext mContext, String url, Map<St
   return getResponse(response);
 }
 
-Future callPostMethodWithMultiImageWithToken(BuildContext mContext, String url, Map<String, String> params, List<File> image) async {
+Future callPostMethodWithMultiImageWithToken(BuildContext mContext, String url,
+    Map<String, String> params, List<File> image) async {
   String _timezone = await FlutterNativeTimezone.getLocalTimezone();
   commonHeaders['timezone'] = _timezone;
-  commonHeaders['Authorization'] = "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
+  commonHeaders['Authorization'] =
+      "Bearer " + PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN);
 
   print("baseUrl--" + APPStrings.baseUrl + url);
   print("baseUrl--body-" + params.toString());
-  var request = http.MultipartRequest('POST', Uri.parse(APPStrings.baseUrl + url));
+  var request =
+      http.MultipartRequest('POST', Uri.parse(APPStrings.baseUrl + url));
 
   if (image.length > 0) {
     for (int i = 0; i < image.length; i++) {
       print("baseUrl--body-images[$i]");
-      request.files.add(await http.MultipartFile.fromPath("files[$i]", image[i].path));
+      request.files
+          .add(await http.MultipartFile.fromPath("files[$i]", image[i].path));
     }
   }
 
@@ -296,10 +377,12 @@ Future<String> post(String url, {headers, body, encoding}) async {
   printWrapped('Request Body = ${json.encode(body)}');
   printWrapped('Request Headers = [$defaultHeaders]\nEncoding[$encoding]}');
 
-  return responseHandler(await http.post(Uri.parse(APPStrings.baseUrl + url), body: json.encode(body), headers: defaultHeaders, encoding: encoding));
+  return responseHandler(await http.post(Uri.parse(APPStrings.baseUrl + url),
+      body: json.encode(body), headers: defaultHeaders, encoding: encoding));
 }
 
-Map<String, String> _initHeaders(Map<String, String>? headers, {bool isMultiPart = false}) {
+Map<String, String> _initHeaders(Map<String, String>? headers,
+    {bool isMultiPart = false}) {
   Map<String, String> defaultHeaders = Map();
 
   if (!isMultiPart) {
@@ -314,7 +397,8 @@ Map<String, String> _initHeaders(Map<String, String>? headers, {bool isMultiPart
     return defaultHeaders;
   }
 
-  String token = PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN, def: "");
+  String token =
+      PreferenceHelper.getString(PreferenceHelper.AUTH_TOKEN, def: "");
   if (token.isNotEmpty) {
     defaultHeaders['Authorization'] = "Bearer " + token;
   }
@@ -331,7 +415,10 @@ Map<String, String> _initHeaders(Map<String, String>? headers, {bool isMultiPart
 
 Future<String> responseHandler(http.Response response) async {
   final String res = response.body;
-  printWrapped('RESPONSE =' + response.statusCode.toString() + " " + response.request.toString());
+  printWrapped('RESPONSE =' +
+      response.statusCode.toString() +
+      " " +
+      response.request.toString());
   printWrapped('RESPONSE =' + res);
   final int statusCode = response.statusCode;
   String errorMessage = "";
@@ -432,4 +519,5 @@ String randomImage() {
   return "https://picsum.photos/500/500?random=" + rng.nextInt(500).toString();
 }
 
-bool validatePhone(String data) => RegExp(r'(^(?:[+0]9)?[0-9]{8,12}$)').hasMatch(data);
+bool validatePhone(String data) =>
+    RegExp(r'(^(?:[+0]9)?[0-9]{8,12}$)').hasMatch(data);

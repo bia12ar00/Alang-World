@@ -21,7 +21,8 @@ import 'package:sb_portal/utils/common/EmailValidator.dart';
 
 class BuyerEditProfileScreen extends StatefulWidget {
   final MyProfileModel? myProfileModel;
-  const BuyerEditProfileScreen({Key? key, this.myProfileModel}) : super(key: key);
+  const BuyerEditProfileScreen({Key? key, this.myProfileModel})
+      : super(key: key);
 
   @override
   _BuyerEditProfileScreenState createState() => _BuyerEditProfileScreenState();
@@ -34,7 +35,8 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
-  final TextEditingController _companyAddressController = TextEditingController();
+  final TextEditingController _companyAddressController =
+      TextEditingController();
   final TextEditingController _pinCodeController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
   final FocusNode _nameFocus = FocusNode();
@@ -65,7 +67,8 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
     _nameController.text = widget.myProfileModel!.results!.profile!.name!;
     _mobileController.text = widget.myProfileModel!.results!.profile!.mobile!;
     _emailController.text = widget.myProfileModel!.results!.profile!.email!;
-    _companyAddressController.text = widget.myProfileModel!.results!.profile!.address!;
+    _companyAddressController.text =
+        widget.myProfileModel!.results!.profile!.address!;
     _pinCodeController.text = widget.myProfileModel!.results!.profile!.pincode!;
     // _dateOfBirthController.text = widget.myProfileModel!.results!.profile!.createdAt!;
     selectGender = widget.myProfileModel!.results!.profile!.gender!;
@@ -117,7 +120,11 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
                         ],
                       ),
                       const SizedBox(width: 16),
-                      Image.asset(APPImages.IC_SPLASH_LOGO, height: 50, width: 50,)
+                      Image.asset(
+                        APPImages.IC_SPLASH_LOGO,
+                        height: 50,
+                        width: 50,
+                      )
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -192,25 +199,25 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
                   const SizedBox(height: 16),
                   countryModel.results != null
                       ? DropdownButton<Countries>(
-                    hint: selectedCountry == null
-                        ? const Text('Country')
-                        : Text(selectedCountry!.name!),
-                    underline: Container(),
-                    isExpanded: true,
-                    items: countryModel.results!.countries!
-                        .map((Countries value) {
-                      return DropdownMenuItem<Countries>(
-                        value: value,
-                        child: Text(value.name!),
-                      );
-                    }).toList(),
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedCountry = newValue;
-                      });
-                      callStateListApi();
-                    },
-                  )
+                          hint: selectedCountry == null
+                              ? const Text('Country')
+                              : Text(selectedCountry!.name!),
+                          underline: Container(),
+                          isExpanded: true,
+                          items: countryModel.results!.countries!
+                              .map((Countries value) {
+                            return DropdownMenuItem<Countries>(
+                              value: value,
+                              child: Text(value.name!),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedCountry = newValue;
+                            });
+                            callStateListApi();
+                          },
+                        )
                       : const SizedBox(),
                   Container(
                     color: AppColors.colorBtnBlack,
@@ -229,13 +236,15 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
                                   : Text(selectedState!.name!),
                               underline: Container(),
                               isExpanded: true,
-                              items: stateModel.results == null ? [] : stateModel.results!.states!
-                                  .map((States value) {
-                                return DropdownMenuItem<States>(
-                                  value: value,
-                                  child: Text(value.name!),
-                                );
-                              }).toList(),
+                              items: stateModel.results == null
+                                  ? []
+                                  : stateModel.results!.states!
+                                      .map((States value) {
+                                      return DropdownMenuItem<States>(
+                                        value: value,
+                                        child: Text(value.name!),
+                                      );
+                                    }).toList(),
                               onChanged: (newValue) {
                                 setState(() {
                                   selectedState = newValue;
@@ -261,13 +270,15 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
                                   : Text(selectedCity!.name!),
                               underline: Container(),
                               isExpanded: true,
-                              items: cityModel.results == null ? [] : cityModel.results!.cities!
-                                  .map((Cities value) {
-                                return DropdownMenuItem<Cities>(
-                                  value: value,
-                                  child: Text(value.name!),
-                                );
-                              }).toList(),
+                              items: cityModel.results == null
+                                  ? []
+                                  : cityModel.results!.cities!
+                                      .map((Cities value) {
+                                      return DropdownMenuItem<Cities>(
+                                        value: value,
+                                        child: Text(value.name!),
+                                      );
+                                    }).toList(),
                               onChanged: (newValue) {
                                 setState(() {
                                   selectedCity = newValue;
@@ -298,7 +309,11 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
                               null,
                               context,
                             ),
-                            Container(height: 1,width: double.maxFinite, color: AppColors.colorRequestBtn,)
+                            Container(
+                              height: 1,
+                              width: double.maxFinite,
+                              color: AppColors.colorRequestBtn,
+                            )
                           ],
                         ),
                       ),
@@ -315,7 +330,11 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
                                   null,
                                   context,
                                   isEnable: false),
-                              Container(height: 1,width: double.maxFinite, color: AppColors.colorRequestBtn,)
+                              Container(
+                                height: 1,
+                                width: double.maxFinite,
+                                color: AppColors.colorRequestBtn,
+                              )
                             ],
                           ),
                           onTap: () {
@@ -386,7 +405,7 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: DateTime(1950,1),
+        firstDate: DateTime(1950, 1),
         lastDate: DateTime.now());
     if (picked != null && picked != selectedDate) {
       setState(() {
@@ -424,12 +443,11 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
       Fluttertoast.showToast(msg: 'Please enter pincode');
     } else if (_pinCodeController.text.toString().length < 6) {
       Fluttertoast.showToast(msg: 'Please enter valid pincode');
-    } else if(_dateOfBirthController.text.toString().isEmpty){
+    } else if (_dateOfBirthController.text.toString().isEmpty) {
       Fluttertoast.showToast(msg: 'Please select company registration date');
-    } else if(selectGender == null) {
+    } else if (selectGender == null) {
       Fluttertoast.showToast(msg: 'Please select gender');
-    }
-    else {
+    } else {
       callEditProfile();
     }
   }
@@ -444,11 +462,12 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
         APPStrings.paramMobile: _mobileController.text.toString(),
         APPStrings.paramPincode: _pinCodeController.text.toString().trim(),
         APPStrings.paramAddress:
-        _companyAddressController.text.toString().trim(),
+            _companyAddressController.text.toString().trim(),
         APPStrings.paramDistrict: selectedCity!.name!,
         APPStrings.paramState: selectedState!.name!,
         APPStrings.paramCountry: selectedCountry!.name!,
-        APPStrings.paramEstablishmentDate: _dateOfBirthController.text.toString(),
+        APPStrings.paramEstablishmentDate:
+            _dateOfBirthController.text.toString(),
         APPStrings.paramGender: selectGender!,
       };
 
@@ -461,6 +480,7 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
             } else {
               SignUpModel signUpModel = SignUpModel.fromJson(value);
               Fluttertoast.showToast(msg: signUpModel.message!);
+              callCountryListApi();
             }
           } catch (ex) {
             Fluttertoast.showToast(msg: APPStrings.INTERNAL_SERVER_ISSUE);
@@ -473,7 +493,6 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
       Fluttertoast.showToast(msg: APPStrings.noInternetConnection);
     }
   }
-
 
   callCountryListApi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -534,9 +553,7 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
-      Map<String, String> body = {
-        APPStrings.paramState: selectedState!.name!
-      };
+      Map<String, String> body = {APPStrings.paramState: selectedState!.name!};
       mAuthProvider!.getCityList(body).then((value) {
         if (value != null) {
           try {

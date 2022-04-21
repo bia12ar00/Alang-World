@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:sb_portal/ui/auth/model/CommonModel.dart';
 import 'package:sb_portal/ui/auth/provider/AuthProvider.dart';
 import 'package:sb_portal/ui/auth/view/SelectPlanScreen.dart';
+import 'package:sb_portal/ui/auth/view/SellerSignUpScreen.dart';
 import 'package:sb_portal/ui/dashboard/view/buyer/BuyerHomeScreenNavigation.dart';
 import 'package:sb_portal/utils/NavKey.dart';
 import 'package:sb_portal/utils/app_colors.dart';
@@ -18,7 +19,15 @@ import 'package:sb_portal/utils/app_string.dart';
 
 class SellerOtpVerifyScreen extends StatefulWidget {
   final bool? isFromSeller;
-  const SellerOtpVerifyScreen({Key? key, this.isFromSeller}) : super(key: key);
+  final String otpSession;
+  final String mobile;
+
+  const SellerOtpVerifyScreen(
+      {Key? key,
+      this.isFromSeller,
+      required this.otpSession,
+      required this.mobile})
+      : super(key: key);
 
   @override
   _SellerOtpVerifyScreenState createState() => _SellerOtpVerifyScreenState();
@@ -27,7 +36,8 @@ class SellerOtpVerifyScreen extends StatefulWidget {
 class _SellerOtpVerifyScreenState extends State<SellerOtpVerifyScreen> {
   AuthProvider? mAuthProvider;
 
-  StreamController<ErrorAnimationType> errorController = StreamController<ErrorAnimationType>();
+  StreamController<ErrorAnimationType> errorController =
+      StreamController<ErrorAnimationType>();
 
   final TextEditingController _otpController = TextEditingController();
   String? smsOTP;
@@ -99,11 +109,12 @@ class _SellerOtpVerifyScreenState extends State<SellerOtpVerifyScreen> {
                 Form(
                   key: formKey,
                   child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 0),
                       child: PinCodeTextField(
                         appContext: context,
                         textStyle: const TextStyle(
-                          color: AppColors.colorLightBrown,
+                          color: AppColors.colorBlack,
                         ),
                         showCursor: false,
                         length: 6,
@@ -129,7 +140,9 @@ class _SellerOtpVerifyScreenState extends State<SellerOtpVerifyScreen> {
                         errorAnimationController: errorController,
                         controller: _otpController,
                         keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         boxShadows: const [
                           BoxShadow(
                             color: Colors.black12,
@@ -155,9 +168,12 @@ class _SellerOtpVerifyScreenState extends State<SellerOtpVerifyScreen> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text(_timerStart, style: AppFont.NUNITO_REGULAR_BLACK_18)],
+                  children: [
+                    Text(_timerStart, style: AppFont.NUNITO_REGULAR_BLACK_18)
+                  ],
                 ),
-                Text('(OTP Waiting Time)', style: AppFont.NUNITO_REGULAR_BLACK_14),
+                Text('(OTP Waiting Time)',
+                    style: AppFont.NUNITO_REGULAR_BLACK_14),
                 const SizedBox(height: 40),
                 GestureDetector(
                   child: Material(
@@ -167,13 +183,17 @@ class _SellerOtpVerifyScreenState extends State<SellerOtpVerifyScreen> {
                     child: Container(
                       alignment: Alignment.center,
                       height: 40,
-                      child: MaterialButton(onPressed: null, child: Text('VERIFY NOW', style: AppFont.NUNITO_BOLD_WHITE_24)),
+                      child: MaterialButton(
+                          onPressed: null,
+                          child: Text('VERIFY NOW',
+                              style: AppFont.NUNITO_BOLD_WHITE_24)),
                     ),
                   ),
                   onTap: () {
                     if (smsOTP == null || smsOTP!.length < 4) {
                       Fluttertoast.showToast(msg: 'Please enter otp');
-                    } else if (_otpController.text.toString().trim().length < 4) {
+                    } else if (_otpController.text.toString().trim().length <
+                        4) {
                       Fluttertoast.showToast(msg: 'Please enter valid otp');
                     } else {
                       callVerifyOtp();
@@ -210,7 +230,9 @@ class _SellerOtpVerifyScreenState extends State<SellerOtpVerifyScreen> {
                         style: TextStyle(
                           decoration: TextDecoration.underline,
                           fontFamily: 'NunitoSemiBold',
-                          color: isResend ? AppColors.colorBrown : AppColors.colorLightBrown,
+                          color: isResend
+                              ? AppColors.colorBrown
+                              : AppColors.colorLightBrown,
                         ),
                       ),
                     )
@@ -235,31 +257,28 @@ class _SellerOtpVerifyScreenState extends State<SellerOtpVerifyScreen> {
 
   callVerifyOtp() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
       Map<String, String> body = {
         APPStrings.paramOtp: smsOTP!,
-        APPStrings.paramType: 'seller',
+        "session_id": widget.otpSession,
       };
 
       mAuthProvider!.verifyOtp(body).then((value) {
         if (value != null) {
           try {
             CommonModel streams = CommonModel.fromJson(value);
-            if (streams.response != null && streams.response == "error") {
+            if (streams.response != null && streams.response == "error")  {
               Fluttertoast.showToast(msg: streams.message);
             } else {
               CommonModel commonModel = CommonModel.fromJson(value);
               Fluttertoast.showToast(msg: commonModel.message!);
-              if (widget.isFromSeller!) {
-                NavKey.navKey.currentState!.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const SelectPlanScreen()), (route) => false);
-              } else {
-                NavKey.navKey.currentState!.pushAndRemoveUntil(
-                    MaterialPageRoute(
-                        builder: (_) => BuyerHomeScreenNavigation(
-                              selectedIndex: 0,
-                            )),
-                    (route) => false);
-              }
+
+              NavKey.navKey.currentState!.push(MaterialPageRoute(
+                  builder: (_) => SellerSignUpScreen(
+                        isFromSeller: widget.isFromSeller!,
+                        mobileNumber: widget.mobile,
+                      )));
             }
           } catch (ex) {
             Fluttertoast.showToast(msg: APPStrings.INTERNAL_SERVER_ISSUE);

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,19 +40,29 @@ class _WithOutLoginNavigationState extends State<WithOutLoginNavigation> {
 
   ProductCategoryModel productCategoryModel = ProductCategoryModel();
   SliderModel sliderModel = SliderModel();
-  WIthOutLoginProductListModel productListModel = WIthOutLoginProductListModel();
+  WIthOutLoginProductListModel productListModel =
+      WIthOutLoginProductListModel();
   Category? categoryData;
   HomeProvider? mHomeProvider;
   final TextEditingController _searchController = TextEditingController();
   List<SwipeWidgetModel> introWidgetsList = [];
+  List<SwipeWidgetModel> introSliderList = [];
   final ValueNotifier<double> _notifier = ValueNotifier<double>(0);
   var currentPageValue = 0;
   int? _previousPage;
   var _pageController;
-  List<Product> searchProd = [];
+  List<CategoryModel> searchProd = [];
+  int _pos = 0;
+  late Timer _timer;
 
   @override
   void initState() {
+    _timer = Timer.periodic(Duration(seconds: 3), (_) {
+      setState(() {
+        _pos = (_pos + 1) % introSliderList.length;
+      });
+    });
+
     page = widget.selectedIndex!;
     _pageController = PageController(
       initialPage: 0,
@@ -61,7 +73,14 @@ class _WithOutLoginNavigationState extends State<WithOutLoginNavigation> {
     callProductCategoryListApi();
     callProductListApi();
     callSliderApi();
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   void _onScroll() {
@@ -104,11 +123,11 @@ class _WithOutLoginNavigationState extends State<WithOutLoginNavigation> {
                         height: 73,
                         width: 73,
                       )),
-                      IconButton(
-                        color: Colors.black,
-                        icon: const Icon(Icons.notifications),
-                        onPressed: () {},
-                      ),
+                      // IconButton(
+                      //   color: Colors.black,
+                      //   icon: const Icon(Icons.notifications),
+                      //   onPressed: () {},
+                      // ),
                     ],
                   ),
                 ),
@@ -122,7 +141,10 @@ class _WithOutLoginNavigationState extends State<WithOutLoginNavigation> {
   }
 
   _onWillPop() {
-    DialogSingleClick.showCustomDialog(context, title: 'Do you want to exit an app', okBtnText: 'OK', cancelBtnText: 'Cancel', okBtnFunction: () {
+    DialogSingleClick.showCustomDialog(context,
+        title: 'Do you want to exit an app',
+        okBtnText: 'OK',
+        cancelBtnText: 'Cancel', okBtnFunction: () {
       SystemChannels.platform.invokeMethod('SystemNavigator.pop');
     });
   }
@@ -134,45 +156,17 @@ class _WithOutLoginNavigationState extends State<WithOutLoginNavigation> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 12),
-                productCategoryModel.results != null
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: AppColors.colorWhite,
-                            border: Border.all(color: AppColors.colorBorder, width: 1.0),
-                            borderRadius: const BorderRadius.all(Radius.circular(6)),
-                          ),
-                          child: DropdownButton<Category>(
-                            hint: categoryData == null ? const Text('Select Category') : Text(categoryData!.categoryName!),
-                            underline: Container(),
-                            isExpanded: true,
-                            isDense: true,
-                            items: productCategoryModel.results!.category!.map((Category value) {
-                              return DropdownMenuItem<Category>(
-                                value: value,
-                                child: Text(value.categoryName!),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                categoryData = newValue;
-                              });
-                            },
-                          ),
-                        ),
-                      )
-                    : const SizedBox(),
                 const SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
                     decoration: BoxDecoration(
                       color: AppColors.colorWhite,
-                      border: Border.all(color: AppColors.colorBorder, width: 1.0),
+                      border:
+                          Border.all(color: AppColors.colorBorder, width: 1.0),
                       borderRadius: const BorderRadius.all(Radius.circular(6)),
                     ),
                     child: Row(
@@ -185,13 +179,14 @@ class _WithOutLoginNavigationState extends State<WithOutLoginNavigation> {
                             keyboardType: TextInputType.text,
                             textCapitalization: TextCapitalization.sentences,
                             onChanged: (value) {
-                              // onSearchTextChanged(value);
+                              onSearchTextChanged(value);
                             },
                             decoration: InputDecoration(
                                 isDense: true,
                                 hintText: 'Search Product',
                                 hintStyle: AppFont.NUNITO_REGULAR_BLACK_14,
-                                floatingLabelBehavior: FloatingLabelBehavior.never,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
                                 border: InputBorder.none),
                           ),
                         ),
@@ -203,72 +198,86 @@ class _WithOutLoginNavigationState extends State<WithOutLoginNavigation> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                productListModel.results != null && productListModel.results!.product!.isNotEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.only(left: 12, right: 12),
-                        child: SizedBox(
-                          height: 206,
-                          child: ListView.builder(
-                            itemCount: introWidgetsList.length,
-                            scrollDirection: Axis.horizontal,
-                            // onPageChanged: (int page) {
-                            //   getChangedPageAndMoveBar(page);
-                            // },
-                            // controller: _pageController,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: AppColors.colorLightBlueGrey,
-                                        border: Border.all(color: AppColors.colorBorder, width: 1.0),
-                                        borderRadius: const BorderRadius.all(Radius.circular(16)),
-                                      ),
-                                      child: Image.network(
-                                        introWidgetsList[index].image!,
-                                        width: MediaQuery.of(context).size.width * 90 / 100,
-                                        height: 204,
-                                        fit: BoxFit.fill,
-                                        errorBuilder: (BuildContext? context, Object? exception, StackTrace? stackTrace) {
-                                          return Image.asset(
-                                            APPImages.icError,
-                                            width: MediaQuery.of(context!).size.width * 90 / 100,
-                                            height: 204,
-                                          );
-                                        },
-                                      ),
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12, right: 12),
+                  child: SizedBox(
+                      height: 206,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.colorLightBlueGrey,
+                                border: Border.all(
+                                    color: AppColors.colorBorder, width: 1.0),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(16)),
+                              ),
+                              child: Image.network(
+                                introSliderList[_pos].image!,
+                                width: MediaQuery.of(context).size.width *
+                                    90 /
+                                    100,
+                                height: 204,
+                                fit: BoxFit.fill,
+                                errorBuilder: (BuildContext? context,
+                                    Object? exception, StackTrace? stackTrace) {
+                                  return Image.asset(
+                                    APPImages.icError,
+                                    width: MediaQuery.of(context!).size.width *
+                                        90 /
+                                        100,
+                                    height: 204,
+                                  );
+                                },
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                            ),
+                          ],
                         ),
-                      )
-                    : const SizedBox(),
+                      )),
+                ),
+
                 const SizedBox(height: 18),
                 // productListModel.results != null && productListModel.results!.product!.isNotEmpty
                 //     ?
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 3.0,
-                      childAspectRatio: 10 / 11,
-                    ),
-                    itemCount: catModel.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return catItem(catModel[index]);
-                    },
-                  ),
-                ),
+                searchProd.isEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 3.0,
+                            childAspectRatio: 10 / 11,
+                          ),
+                          itemCount: catModel.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return catItem(catModel[index]);
+                          },
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 3.0,
+                            childAspectRatio: 10 / 11,
+                          ),
+                          itemCount: searchProd.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return catItem(searchProd[index]);
+                          },
+                        ),
+                      ),
                 // : const SizedBox(),
               ],
             ),
@@ -341,50 +350,64 @@ class _WithOutLoginNavigationState extends State<WithOutLoginNavigation> {
   }
 
   Widget catItem(CategoryModel catItem) {
-    return Card(
-      color: AppColors.colorLightBlueGrey,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 3.0, bottom: 3),
-        child: Column(
-          // mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            ClipRRect(
-              clipBehavior: Clip.hardEdge,
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-              child: Image.asset(
-                catItem.image,
-                // height: MediaQuery.of(context).size.height * 0.1,
-                fit: BoxFit.contain,
-                width: 46,
-                height: 46,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Icon(
-                    Icons.error_outline,
-                    color: AppColors.PRIMARY_TEXT_COLOR,
-                    size: 30,
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              // padding: const EdgeInsets.all(0),
-              padding: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 2),
-              child: Center(
-                child: AutoSizeText(
-                  catItem.name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 12.0),
-                  maxLines: 3,
+    return InkWell(
+      onTap: () {
+        NavKey.navKey.currentState!.push(
+          MaterialPageRoute(
+              builder: (_) => CategoryNameScreen(
+                    id: catItem.id,
+                    catrgoryName: catItem.name,
+                  )),
+        );
+      },
+      child: Card(
+        color: AppColors.colorLightBlueGrey,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 3.0, bottom: 3),
+          child: Column(
+            // mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              ClipRRect(
+                clipBehavior: Clip.hardEdge,
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0)),
+                child: Image.asset(
+                  catItem.image,
+                  // height: MediaQuery.of(context).size.height * 0.1,
+                  fit: BoxFit.contain,
+                  width: 46,
+                  height: 46,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(
+                      Icons.error_outline,
+                      color: AppColors.PRIMARY_TEXT_COLOR,
+                      size: 30,
+                    );
+                  },
                 ),
               ),
-            )
-          ],
+              const SizedBox(height: 10),
+              Padding(
+                // padding: const EdgeInsets.all(0),
+                padding:
+                    const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 2),
+                child: Center(
+                  child: AutoSizeText(
+                    catItem.name,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 12.0),
+                    maxLines: 3,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -399,7 +422,8 @@ class _WithOutLoginNavigationState extends State<WithOutLoginNavigation> {
 
   callProductListApi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
       mHomeProvider!.productListWithOutSellerId().then((value) {
         if (value != null) {
           try {
@@ -427,35 +451,41 @@ class _WithOutLoginNavigationState extends State<WithOutLoginNavigation> {
 
   callSliderApi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
       mHomeProvider!.sliders().then((value) {
         if (value != null) {
           try {
             CommonModel streams = CommonModel.fromJson(value);
             if (streams.response != null && streams.response == "error") {
               Fluttertoast.showToast(msg: streams.message);
+              introSliderList = [];
             } else {
               sliderModel = SliderModel.fromJson(value);
               for (var item in sliderModel.results!.slides!) {
-                introWidgetsList.add(SwipeWidgetModel(image: item.image!));
+                introSliderList.add(SwipeWidgetModel(image: item.image!));
               }
             }
           } catch (ex) {
             print(ex);
+            introSliderList = [];
             Fluttertoast.showToast(msg: APPStrings.INTERNAL_SERVER_ISSUE);
           }
         } else {
+          introSliderList = [];
           Fluttertoast.showToast(msg: APPStrings.INTERNAL_SERVER_ISSUE);
         }
       });
     } else {
+      introSliderList = [];
       Fluttertoast.showToast(msg: APPStrings.noInternetConnection);
     }
   }
 
   callProductCategoryListApi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
       mHomeProvider!.getProductCategory().then((value) {
         if (value != null) {
           try {
@@ -485,8 +515,9 @@ class _WithOutLoginNavigationState extends State<WithOutLoginNavigation> {
       return;
     }
 
-    for (var userDetail in productListModel.results!.product!) {
-      if (userDetail.productName!.toLowerCase().contains(text.toLowerCase()) || userDetail.categoryname!.toString().contains(text.toLowerCase())) {
+    for (var userDetail in catModel) {
+      if (userDetail.name.toLowerCase().contains(text.toLowerCase()) ||
+          userDetail.name.toString().contains(text.toLowerCase())) {
         searchProd.add(userDetail);
       }
     }

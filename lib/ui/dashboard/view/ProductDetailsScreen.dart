@@ -11,11 +11,16 @@ import 'package:sb_portal/ui/dashboard/model/AddProductModel.dart';
 import 'package:sb_portal/ui/dashboard/model/ProductListModel.dart';
 import 'package:sb_portal/ui/dashboard/provider/HomeProvider.dart';
 import 'package:sb_portal/ui/dashboard/view/EditProductScreen.dart';
+import 'package:sb_portal/ui/dashboard/view/buyer/BuyerSideMenu.dart';
+import 'package:sb_portal/ui/dashboard/view/notification.dart';
+import 'package:sb_portal/ui/dashboard/view/widgets/SideMenu.dart';
+import 'package:sb_portal/ui/dashboard/view/without_login/widget/WithOutLoginSidemenu.dart';
 import 'package:sb_portal/utils/NavKey.dart';
 import 'package:sb_portal/utils/app_colors.dart';
 import 'package:sb_portal/utils/app_images.dart';
 import 'package:sb_portal/utils/app_string.dart';
 import 'package:sb_portal/utils/app_widgets.dart';
+import 'package:sb_portal/utils/preference_helper.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final Product? product;
@@ -62,6 +67,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     mHomeProvider = Provider.of<HomeProvider>(context);
     return SafeArea(
       child: Scaffold(
+        drawer: !PreferenceHelper.getBool(PreferenceHelper.IS_SIGN_IN)
+            ? const WithOutLoginSidemenu()
+            : PreferenceHelper.getBool(PreferenceHelper.IS_SELLER_SIGN_IN)
+                ? SideMenu()
+                : const BuyerSideMenu(),
         appBar: AppBar(
             toolbarHeight: 80,
             flexibleSpace: Padding(
@@ -70,9 +80,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 children: [
                   IconButton(
                     color: Colors.black,
-                    icon: const Icon(Icons.arrow_back_outlined),
+                    icon: const Icon(Icons.menu),
                     onPressed: () {
-                      //Scaffold.of(context).openDrawer();
+                      Scaffold.of(context).openDrawer();
                     },
                   ),
                   Expanded(
@@ -81,14 +91,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     height: 73,
                     width: 73,
                   )),
-                  IconButton(
-                    color: Colors.black,
-                    icon: const Icon(
-                      Icons.delete,
-                      size: 30,
-                    ),
-                    onPressed: delete,
-                  ),
+                  PreferenceHelper.getBool(PreferenceHelper.IS_SELLER_SIGN_IN)
+                      ? IconButton(
+                          color: Colors.black,
+                          icon: const Icon(
+                            Icons.delete,
+                            size: 30,
+                          ),
+                          onPressed: delete,
+                        )
+                      : IconButton(
+                          color: Colors.black,
+                          icon: const Icon(Icons.notifications),
+                          onPressed: () {
+                            NavKey.navKey.currentState!.push(
+                              MaterialPageRoute(
+                                  builder: (_) => NotificationPage()),
+                            );
+                          },
+                        ),
                 ],
               ),
             ),
@@ -97,8 +118,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         backgroundColor: AppColors.colorWhite,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
+            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
               Align(
@@ -176,45 +197,101 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               const SizedBox(height: 10),
               Text(
                 widget.product!.productName!,
-                style: TextStyle(color: Colors.black.withOpacity(0.9), fontFamily: 'RobotRegular', fontWeight: FontWeight.w500, fontSize: 22),
+                style: TextStyle(
+                    color: Colors.black.withOpacity(0.9),
+                    fontFamily: 'RobotRegular',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     widget.product!.categoryname!,
-                    style: TextStyle(color: Colors.black.withOpacity(0.9), fontFamily: 'RobotRegular'),
+                    style: TextStyle(
+                        color: Colors.black.withOpacity(0.9),
+                        fontFamily: 'RobotRegular',
+                        fontSize: 12),
                   ),
-                  InkWell(
-                    onTap: () {
-                      //  EditProductScreen
-                      NavKey.navKey.currentState!.push(
-                        MaterialPageRoute(
-                            builder: (_) => EditProductScreen(
-                                  product: widget.product,
-                                )),
-                      );
-                    },
-                    child: Container(
-                      height: 25,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(color: Colors.black.withOpacity(0.9), borderRadius: BorderRadius.circular(3)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Icon(
-                            FontAwesomeIcons.penToSquare,
-                            color: Colors.white,
-                            size: 15,
+                  PreferenceHelper.getBool(PreferenceHelper.IS_SELLER_SIGN_IN)
+                      ? InkWell(
+                          onTap: () {
+                            //  EditProductScreen
+                            NavKey.navKey.currentState!
+                                .push(
+                              MaterialPageRoute(
+                                  builder: (_) => EditProductScreen(
+                                        product: widget.product,
+                                      )),
+                            )
+                                .then((value) {
+                              NavKey.navKey.currentState!.pop();
+                            });
+                          },
+                          child: Container(
+                            height: 25,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(3)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.penToSquare,
+                                  color: Colors.white,
+                                  size: 15,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text("EDIT",
+                                    style: TextStyle(
+                                        color: Colors.white.withOpacity(0.9),
+                                        fontFamily: 'RobotRegular')),
+                              ],
+                            ),
                           ),
-                          const SizedBox(
-                            width: 5,
+                        )
+                      : InkWell(
+                          onTap: () {
+                            //  EditProductScreen
+                            // NavKey.navKey.currentState!
+                            //     .push(
+                            //   MaterialPageRoute(
+                            //       builder: (_) => EditProductScreen(
+                            //             product: widget.product,
+                            //           )),
+                            // )
+                            //     .then((value) {
+                            //   NavKey.navKey.currentState!.pop();
+                            // });
+                          },
+                          child: Container(
+                            height: 25,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(3)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.penToSquare,
+                                  color: Colors.white,
+                                  size: 15,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text("CONTACT NOW",
+                                    style: TextStyle(
+                                        color: Colors.white.withOpacity(0.9),
+                                        fontFamily: 'RobotRegular')),
+                              ],
+                            ),
                           ),
-                          Text("EDIT", style: TextStyle(color: Colors.white.withOpacity(0.9), fontFamily: 'RobotRegular')),
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
                 ],
               ),
               const Divider(
@@ -223,7 +300,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
               Text(
                 widget.product!.description!,
-                style: TextStyle(color: Colors.black.withOpacity(0.9), fontFamily: 'RobotRegular'),
+                style: TextStyle(
+                    color: Colors.black.withOpacity(0.9),
+                    fontFamily: 'RobotRegular',
+                    fontSize: 12),
               ),
 
               //  Row(
@@ -293,8 +373,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   void delete() {
-    AppWidgets.showConfirmationDialog(context, 'Delete Product', (MediaQuery.of(context).size.height / 80.0) * 19,
-        actionLabelOne: APPStrings.NO, actionLabelTwo: APPStrings.YES, onClickActionOne: () {
+    AppWidgets.showConfirmationDialog(context, 'Delete Product',
+        (MediaQuery.of(context).size.height / 80.0) * 19,
+        actionLabelOne: APPStrings.NO,
+        actionLabelTwo: APPStrings.YES, onClickActionOne: () {
       Navigator.of(context).pop();
     }, onClickActionTwo: () {
       Navigator.of(context).pop();
@@ -304,7 +386,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   callDeleteProductApi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
       mHomeProvider!.deleteProduct(widget.product!.id.toString()).then((value) {
         if (value != null) {
           try {

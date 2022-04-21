@@ -8,29 +8,37 @@ import 'package:sb_portal/ui/auth/view/SellerLogin.dart';
 import 'package:sb_portal/ui/dashboard/model/ProductListModel.dart';
 import 'package:sb_portal/ui/dashboard/model/WIthOutLoginProductListModel.dart';
 import 'package:sb_portal/ui/dashboard/provider/HomeProvider.dart';
+import 'package:sb_portal/ui/dashboard/view/ProductDetailsScreen.dart';
+import 'package:sb_portal/ui/dashboard/view/buyer/BuyerSideMenu.dart';
+import 'package:sb_portal/ui/dashboard/view/notification.dart';
 import 'package:sb_portal/ui/dashboard/view/without_login/widget/WithOutLoginSidemenu.dart';
+import 'package:sb_portal/utils/NavKey.dart';
 import 'package:sb_portal/utils/app_colors.dart';
 import 'package:sb_portal/utils/app_font.dart';
 import 'package:sb_portal/utils/app_images.dart';
 import 'package:sb_portal/utils/app_string.dart';
+import 'package:sb_portal/utils/preference_helper.dart';
 
 class CategoryNameScreen extends StatefulWidget {
-  const CategoryNameScreen({Key? key}) : super(key: key);
+  int id;
+  String catrgoryName;
+  CategoryNameScreen({Key? key, required this.id, required this.catrgoryName})
+      : super(key: key);
 
   @override
   _CategoryNameScreenState createState() => _CategoryNameScreenState();
 }
 
 class _CategoryNameScreenState extends State<CategoryNameScreen> {
-
   final TextEditingController _searchController = TextEditingController();
-  WIthOutLoginProductListModel productListModel = WIthOutLoginProductListModel();
+  WIthOutLoginProductListModel productListModel =
+      WIthOutLoginProductListModel();
   HomeProvider? mHomeProvider;
   List<Product> searchProd = [];
 
   @override
   void initState() {
-    callProductListApi();
+    callProductWithIDListApi(widget.id);
     super.initState();
   }
 
@@ -41,7 +49,9 @@ class _CategoryNameScreenState extends State<CategoryNameScreen> {
       child: ModalProgressHUD(
         inAsyncCall: mHomeProvider!.isRequestSend,
         child: Scaffold(
-          drawer: const WithOutLoginSidemenu(),
+          drawer: PreferenceHelper.getBool(PreferenceHelper.IS_SIGN_IN)
+              ? const BuyerSideMenu()
+              : const WithOutLoginSidemenu(),
           appBar: AppBar(
               toolbarHeight: 80,
               flexibleSpace: Padding(
@@ -55,12 +65,24 @@ class _CategoryNameScreenState extends State<CategoryNameScreen> {
                         Scaffold.of(context).openDrawer();
                       },
                     ),
-                    Expanded(child: Image.asset(APPImages.IC_SPLASH_LOGO, height: 73, width: 73,)),
-                    IconButton(
-                      color: Colors.black,
-                      icon: const Icon(Icons.notifications),
-                      onPressed: () {},
-                    ),
+                    Expanded(
+                        child: Image.asset(
+                      APPImages.IC_SPLASH_LOGO,
+                      height: 73,
+                      width: 73,
+                    )),
+                    PreferenceHelper.getBool(PreferenceHelper.IS_SIGN_IN)
+                        ? IconButton(
+                            color: Colors.black,
+                            icon: const Icon(Icons.notifications),
+                            onPressed: () {
+                              NavKey.navKey.currentState!.push(
+                                MaterialPageRoute(
+                                    builder: (_) => NotificationPage()),
+                              );
+                            },
+                          )
+                        : Container(),
                   ],
                 ),
               ),
@@ -72,18 +94,25 @@ class _CategoryNameScreenState extends State<CategoryNameScreen> {
               const SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text('Category Name', style: AppFont.NUNITO_SEMI_BOLD_BLACK_24),
+                child: Text(widget.catrgoryName,
+                    style: AppFont.NUNITO_SEMI_BOLD_BLACK_20),
               ),
               const SizedBox(height: 6),
-              Container(height: 1, width: 150,color: AppColors.colorBlack,),
+              Container(
+                height: 1,
+                width: 150,
+                color: AppColors.colorBlack,
+              ),
               const SizedBox(height: 22),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   decoration: BoxDecoration(
                     color: AppColors.colorWhite,
-                    border: Border.all(color: AppColors.colorBorder, width: 1.0),
+                    border:
+                        Border.all(color: AppColors.colorBorder, width: 1.0),
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
                   ),
                   child: Row(
@@ -102,7 +131,8 @@ class _CategoryNameScreenState extends State<CategoryNameScreen> {
                               isDense: true,
                               hintText: 'Search product',
                               hintStyle: AppFont.NUNITO_REGULAR_SILVER_14,
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
                               border: InputBorder.none),
                         ),
                       ),
@@ -115,81 +145,93 @@ class _CategoryNameScreenState extends State<CategoryNameScreen> {
               ),
               _searchController.text.isNotEmpty
                   ? searchProd.isNotEmpty
-                  ? Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return buildProductItem(
-                        searchProd[index]);
-                  },
-                  itemCount:
-                  searchProd.length,
+                      ? Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return buildProductItem(searchProd[index]);
+                            },
+                            itemCount: searchProd.length,
+                          ),
+                        )
+                      : const SizedBox()
+                  : productListModel.results != null &&
+                          productListModel.results!.product!.isNotEmpty
+                      ? Expanded(
+                          child: ListView.builder(
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return buildProductItem(
+                                productListModel.results!.product![index]);
+                          },
+                          itemCount: productListModel.results!.product!.length,
+                        ))
+                      : const SizedBox(),
+              if (PreferenceHelper.getBool(PreferenceHelper.IS_SELLER_SIGN_IN))
+                const SizedBox(height: 16),
+              if (PreferenceHelper.getBool(PreferenceHelper.IS_SELLER_SIGN_IN))
+                Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Text(
+                                'SIGN UP/SIGN IN',
+                                style: AppFont.NUNITO_REGULAR_WHITE_12,
+                              ),
+                              Text(
+                                'SELLER',
+                                style: AppFont.NUNITO_BOLD_WHITE_18,
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          color: AppColors.colorOrange,
+                        ),
+                        onTap: () {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const SellerLogin(
+                                        isFromSeller: true,
+                                      )),
+                              (route) => false);
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const SellerLogin(
+                                        isFromSeller: false,
+                                      )),
+                              (route) => false);
+                        },
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Text(
+                                'SIGN UP/SIGN IN',
+                                style: AppFont.NUNITO_REGULAR_WHITE_12,
+                              ),
+                              Text(
+                                'BUYER',
+                                style: AppFont.NUNITO_BOLD_WHITE_18,
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          color: AppColors.colorSKyBlue,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              )
-                  : const SizedBox()
-                  : productListModel.results != null && productListModel.results!.product!.isNotEmpty
-                  ? Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return buildProductItem(
-                          productListModel.results!.product![index]);
-                    },
-                    itemCount:
-                    productListModel.results!.product!.length,
-                  ))
-                  : const SizedBox(),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Text('SIGN UP/SIGN IN', style: AppFont.NUNITO_REGULAR_WHITE_12,),
-                            Text('SELLER', style: AppFont.NUNITO_BOLD_WHITE_18,),
-                          ],
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        color: AppColors.colorOrange,
-                      ),
-                      onTap: () {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const SellerLogin(
-                                  isFromSeller: true,
-                                )),
-                                (route) => false);
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const SellerLogin(
-                                  isFromSeller: false,
-                                )),
-                                (route) => false);
-                      },
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Text('SIGN UP/SIGN IN',style: AppFont.NUNITO_REGULAR_WHITE_12,),
-                            Text('BUYER', style: AppFont.NUNITO_BOLD_WHITE_18,),
-                          ],
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        color: AppColors.colorSKyBlue,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
         ),
@@ -200,81 +242,87 @@ class _CategoryNameScreenState extends State<CategoryNameScreen> {
   buildProductItem(Product product) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      child: Container(
-        padding: const EdgeInsets.only(left: 12,bottom: 8, top: 8,),
-        decoration: BoxDecoration(
-          color: AppColors.colorLightBlueGrey,
-          border: Border.all(color: AppColors.colorBorder, width: 1.0),
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-        ),
-        child: Row(
-          children: [
-            Image.network(product.image1!, width: 100, height: 100,
-              fit: BoxFit.fill,
-              errorBuilder: (BuildContext? context, Object? exception, StackTrace? stackTrace) {
-                return const Icon(
-                  Icons.error_outlined,
-                  size: 100,
-                );
-              },),
-            const SizedBox(width: 4),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(product.productName!),
-                  const SizedBox(height: 8),
-                  Text(product.categoryname!),
-                ],
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => ProductDetailsScreen(
+                        product: product,
+                      ))).then((value) {
+            callProductWithIDListApi(widget.id);
+          });
+        },
+        child: Container(
+          padding: const EdgeInsets.only(
+            left: 12,
+            bottom: 8,
+            top: 8,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.colorLightBlueGrey,
+            border: Border.all(color: AppColors.colorBorder, width: 1.0),
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+          ),
+          child: Row(
+            children: [
+              Image.network(
+                product.image1!,
+                width: 100,
+                height: 100,
+                fit: BoxFit.fill,
+                errorBuilder: (BuildContext? context, Object? exception,
+                    StackTrace? stackTrace) {
+                  return const Icon(
+                    Icons.error_outlined,
+                    size: 100,
+                  );
+                },
               ),
-            ),
-            const SizedBox(width: 4),
-            GestureDetector(
-              child: Material(
-                elevation: 0.0,
-                borderRadius: BorderRadius.circular(6),
-                color: AppColors.colorBtnBlack,
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 28,
-                  child: MaterialButton(
-                      onPressed: null,
-                      child: Text('CONTACT NOW',
-                          style: AppFont.NUNITO_REGULAR_WHITE_10)),
+              const SizedBox(width: 4),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(product.productName!),
+                    const SizedBox(height: 8),
+                    Text(product.categoryname!),
+                  ],
                 ),
               ),
-              onTap: () {
-                Fluttertoast.showToast(msg: 'Please SIGN UP/SIGN IN IN BUYER');
-              },
-            ),
-            const SizedBox(width: 4),
-          ],
+              const SizedBox(width: 4),
+              GestureDetector(
+                child: Material(
+                  elevation: 0.0,
+                  borderRadius: BorderRadius.circular(6),
+                  color: AppColors.colorBtnBlack,
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 28,
+                    child: MaterialButton(
+                        onPressed: null,
+                        child: Text('CONTACT NOW',
+                            style: AppFont.NUNITO_REGULAR_WHITE_10)),
+                  ),
+                ),
+                onTap: () {
+                  Fluttertoast.showToast(
+                      msg: 'Please SIGN UP/SIGN IN IN BUYER');
+                },
+              ),
+              const SizedBox(width: 4),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  onSearchTextChanged(String text) async {
-    searchProd.clear();
-    if (text.isEmpty) {
-      setState(() {});
-      return;
-    }
-
-    for (var userDetail in productListModel.results!.product!) {
-      if (userDetail.productName!.toLowerCase().contains(text.toLowerCase()) ||
-          userDetail.categoryname!.toString().contains(text.toLowerCase())) {
-        searchProd.add(userDetail);
-      }
-    }
-    setState(() {});
-  }
-
-  callProductListApi() async {
+  callProductWithIDListApi(int id) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
-      mHomeProvider!.productListWithOutSellerId().then((value) {
+      mHomeProvider!.productListWithSellerId(id).then((value) {
         if (value != null) {
           try {
             CommonModel streams = CommonModel.fromJson(value);
@@ -295,4 +343,46 @@ class _CategoryNameScreenState extends State<CategoryNameScreen> {
       Fluttertoast.showToast(msg: APPStrings.noInternetConnection);
     }
   }
+
+  onSearchTextChanged(String text) async {
+    searchProd.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    for (var userDetail in productListModel.results!.product!) {
+      if (userDetail.productName!.toLowerCase().contains(text.toLowerCase()) ||
+          userDetail.categoryname!.toString().contains(text.toLowerCase())) {
+        searchProd.add(userDetail);
+      }
+    }
+    setState(() {});
+  }
+
+  // callProductListApi() async {
+  //   var connectivityResult = await (Connectivity().checkConnectivity());
+  //   if (connectivityResult == ConnectivityResult.mobile ||
+  //       connectivityResult == ConnectivityResult.wifi) {
+  //     mHomeProvider!.productListWithOutSellerId().then((value) {
+  //       if (value != null) {
+  //         try {
+  //           CommonModel streams = CommonModel.fromJson(value);
+  //           if (streams.response != null && streams.response == "error") {
+  //             Fluttertoast.showToast(msg: streams.message);
+  //           } else {
+  //             productListModel = WIthOutLoginProductListModel.fromJson(value);
+  //           }
+  //         } catch (ex) {
+  //           print(ex);
+  //           Fluttertoast.showToast(msg: APPStrings.INTERNAL_SERVER_ISSUE);
+  //         }
+  //       } else {
+  //         Fluttertoast.showToast(msg: APPStrings.INTERNAL_SERVER_ISSUE);
+  //       }
+  //     });
+  //   } else {
+  //     Fluttertoast.showToast(msg: APPStrings.noInternetConnection);
+  //   }
+  // }
 }

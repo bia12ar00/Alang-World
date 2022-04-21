@@ -19,7 +19,7 @@
         </intent>
     </queries>
    <application
-        android:label="sb_portal"
+        android:label="Alang World"
         android:name="Application"
         android:icon="@mipmap/ic_launcher">
         <activity

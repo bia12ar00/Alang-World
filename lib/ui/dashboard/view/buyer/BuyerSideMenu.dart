@@ -65,14 +65,20 @@ class _BuyerSideMenuState extends State<BuyerSideMenu> {
             title: const Text('Alang World'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const BuyerAlangWorldScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const BuyerAlangWorldScreen()));
             },
           ),
           ListTile(
             title: const Text('Contact US'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const BuyerContactUsScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const BuyerContactUsScreen()));
             },
           ),
           ListTile(
@@ -87,8 +93,10 @@ class _BuyerSideMenuState extends State<BuyerSideMenu> {
   }
 
   void logout() {
-    AppWidgets.showConfirmationDialog(context, 'Logout', (MediaQuery.of(context).size.height / 80.0) * 19,
-        actionLabelOne: APPStrings.NO, actionLabelTwo: APPStrings.YES, onClickActionOne: () {
+    AppWidgets.showConfirmationDialog(
+        context, 'Logout', (MediaQuery.of(context).size.height / 80.0) * 19,
+        actionLabelOne: APPStrings.NO,
+        actionLabelTwo: APPStrings.YES, onClickActionOne: () {
       Navigator.of(context).pop();
     }, onClickActionTwo: () {
       PreferenceHelper.clear();

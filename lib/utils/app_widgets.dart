@@ -12,7 +12,12 @@ import 'app_font.dart';
 
 class AppWidgets {
   static buildInputFields(
-      TextEditingController _controller, String name, bool isPass, FocusNode focusNode, FocusNode? nextFocusNode, BuildContext context,
+      TextEditingController _controller,
+      String name,
+      bool isPass,
+      FocusNode focusNode,
+      FocusNode? nextFocusNode,
+      BuildContext context,
       {textInputAction: TextInputAction.done,
       EdgeInsets scrollPadding: const EdgeInsets.only(bottom: 40.0),
       bool isEnable = true,
@@ -45,7 +50,12 @@ class AppWidgets {
   }
 
   static buildInputFieldsWithNumber(
-      TextEditingController _controller, String name, bool isPass, FocusNode focusNode, FocusNode? nextFocusNode, BuildContext context,
+      TextEditingController _controller,
+      String name,
+      bool isPass,
+      FocusNode focusNode,
+      FocusNode? nextFocusNode,
+      BuildContext context,
       {textInputAction: TextInputAction.done,
       EdgeInsets scrollPadding: const EdgeInsets.only(bottom: 40.0),
       bool isEnable = true,
@@ -55,7 +65,8 @@ class AppWidgets {
       textInputAction: textInputAction,
       scrollPadding: scrollPadding,
       style: AppFont.NUNITO_REGULAR_BLACK_14,
-      keyboardType: isPass ? TextInputType.visiblePassword : TextInputType.number,
+      keyboardType:
+          isPass ? TextInputType.visiblePassword : TextInputType.number,
       obscureText: isPass,
       enabled: isEnable,
       maxLength: 6,
@@ -75,7 +86,12 @@ class AppWidgets {
   }
 
   static buildInputFieldsForUrl(
-      TextEditingController _controller, String name, bool isPass, FocusNode focusNode, FocusNode? nextFocusNode, BuildContext context,
+      TextEditingController _controller,
+      String name,
+      bool isPass,
+      FocusNode focusNode,
+      FocusNode? nextFocusNode,
+      BuildContext context,
       {textInputAction: TextInputAction.done,
       EdgeInsets scrollPadding: const EdgeInsets.only(bottom: 40.0),
       bool isEnable = true,
@@ -103,20 +119,28 @@ class AppWidgets {
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
         disabledBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
       ),
     );
   }
 
   static buildInputFieldsForNamePopup(
-      TextEditingController _controller, String name, bool isPass, FocusNode focusNode, FocusNode? nextFocusNode, BuildContext context,
+      TextEditingController _controller,
+      String name,
+      bool isPass,
+      FocusNode focusNode,
+      FocusNode? nextFocusNode,
+      BuildContext context,
       {textInputAction: TextInputAction.done,
       EdgeInsets scrollPadding: const EdgeInsets.only(bottom: 50.0),
       bool isEnable = true,
@@ -147,20 +171,28 @@ class AppWidgets {
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
         disabledBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
       ),
     );
   }
 
   static buildInputFieldsForName(
-      TextEditingController _controller, String name, bool isPass, FocusNode focusNode, FocusNode? nextFocusNode, BuildContext context,
+      TextEditingController _controller,
+      String name,
+      bool isPass,
+      FocusNode focusNode,
+      FocusNode? nextFocusNode,
+      BuildContext context,
       {textInputAction: TextInputAction.done,
       EdgeInsets scrollPadding: const EdgeInsets.only(bottom: 40.0),
       bool isEnable = true,
@@ -190,19 +222,23 @@ class AppWidgets {
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
         disabledBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
       ),
     );
   }
 
-  static buildInputFieldsForNameWithError(TextEditingController _controller, String name,
+  static buildInputFieldsForNameWithError(
+      TextEditingController _controller, String name,
       {Function(String)? onValidator,
       Function(String)? onChanged,
       Function(String)? onSaved,
@@ -236,13 +272,16 @@ class AppWidgets {
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
         disabledBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
       ),
     );
@@ -264,7 +303,8 @@ class AppWidgets {
           alignment: Alignment.center,
           width: btnWidth,
           height: btnHeight,
-          child: MaterialButton(onPressed: null, child: Text(btnTitle!, style: textStyle)),
+          child: MaterialButton(
+              onPressed: null, child: Text(btnTitle!, style: textStyle)),
         ),
       ),
       onTap: onButtonTapAction,
@@ -293,7 +333,8 @@ class AppWidgets {
             border: Border.all(color: bgbBorderColor),
             borderRadius: BorderRadius.all(Radius.circular(Dimens.margin24)),
           ),
-          child: MaterialButton(onPressed: null, child: Text(btnTitle!, style: textStyle)),
+          child: MaterialButton(
+              onPressed: null, child: Text(btnTitle!, style: textStyle)),
         ),
       ),
       onTap: onButtonTapAction,
@@ -315,10 +356,12 @@ class AppWidgets {
         builder: (context) {
           return Align(
             child: Material(
-              borderRadius: const BorderRadius.all(Radius.circular(Dimens.margin12)),
+              borderRadius:
+                  const BorderRadius.all(Radius.circular(Dimens.margin12)),
               child: Container(
                   height: height,
-                  padding: EdgeInsets.symmetric(horizontal: Dimens.margin16, vertical: Dimens.margin24),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Dimens.margin16, vertical: Dimens.margin24),
                   width: (MediaQuery.of(context).size.width / 100.0) * 84,
                   child: Column(
                     children: [
@@ -340,7 +383,7 @@ class AppWidgets {
                                 onClickActionOne!,
                                 bgColor: AppColors.colorWhite,
                                 borderRadius: 22,
-                                textStyle: AppFont.NUNITO_BOLD_LIGHT_BROWN_16,
+                                textStyle: AppFont.NUNITO_BOLD_BLACK_16,
                               ),
                             ],
                           ),
@@ -351,7 +394,7 @@ class AppWidgets {
                                 context,
                                 actionLabelTwo,
                                 onClickActionTwo!,
-                                bgColor: AppColors.colorLightBrown,
+                                bgColor: AppColors.colorBlack,
                                 borderRadius: 22,
                                 textStyle: AppFont.NUNITO_BOLD_WHITE_16,
                               ),
@@ -366,7 +409,8 @@ class AppWidgets {
         });
   }
 
-  static Widget createMaterialButton(BuildContext context, String title, Function() onPressed,
+  static Widget createMaterialButton(
+      BuildContext context, String title, Function() onPressed,
       {double borderRadius = 16.0, TextStyle? textStyle, Color? bgColor}) {
     return GestureDetector(
       child: Material(
@@ -378,7 +422,7 @@ class AppWidgets {
           width: 130,
           height: 40,
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.colorLightBrown),
+            border: Border.all(color: AppColors.colorBlack),
             borderRadius: BorderRadius.all(Radius.circular(Dimens.margin24)),
           ),
           child: MaterialButton(
@@ -396,7 +440,12 @@ class AppWidgets {
   }
 
   static buildCommentInputFields(
-      TextEditingController _controller, String name, bool isPass, FocusNode focusNode, FocusNode? nextFocusNode, BuildContext context,
+      TextEditingController _controller,
+      String name,
+      bool isPass,
+      FocusNode focusNode,
+      FocusNode? nextFocusNode,
+      BuildContext context,
       {textInputAction: TextInputAction.done,
       EdgeInsets scrollPadding: const EdgeInsets.only(bottom: 40.0),
       bool isEnable = true,
@@ -408,7 +457,8 @@ class AppWidgets {
       textInputAction: textInputAction,
       scrollPadding: scrollPadding,
       textCapitalization: TextCapitalization.sentences,
-      style: textStyle == null ? AppFont.NUNITO_REGULAR_DARK_BLACK_16 : textStyle,
+      style:
+          textStyle == null ? AppFont.NUNITO_REGULAR_DARK_BLACK_16 : textStyle,
       keyboardType: isPass ? TextInputType.visiblePassword : TextInputType.text,
       obscureText: isPass,
       enabled: isEnable,
@@ -426,13 +476,16 @@ class AppWidgets {
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
         disabledBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.colorBorder, width: 1.0),
+          borderSide:
+              const BorderSide(color: AppColors.colorBorder, width: 1.0),
         ),
       ),
     );
@@ -444,29 +497,40 @@ class AppWidgets {
 
   static convertServerDate(String date) {
     DateTime newDate = DateFormat("yyyy/MM/dd").parse(format(date));
-    return (newDate.day.toString() + "-" + newDate.month.toString() + "-" + newDate.year.toString());
+    return (newDate.day.toString() +
+        "-" +
+        newDate.month.toString() +
+        "-" +
+        newDate.year.toString());
   }
 
   static convertDate(String date) {
     DateTime newDate = DateFormat("dd/MM/yyyy").parse(format(date));
-    return (newDate.year.toString() + "-" + newDate.month.toString() + "-" + newDate.day.toString());
+    return (newDate.year.toString() +
+        "-" +
+        newDate.month.toString() +
+        "-" +
+        newDate.day.toString());
   }
 
   static convertDateForAddEvent(String date) {
     DateTime newDate = DateFormat("yyyy-MM-dd HH:mm").parse(date);
-    String formatDate(DateTime date) => new DateFormat("yyyy-MM-dd hh:mm").format(date);
+    String formatDate(DateTime date) =>
+        new DateFormat("yyyy-MM-dd hh:mm").format(date);
     return formatDate(newDate);
   }
 
   static convertDateEditEvent(String date) {
     DateTime newDate = DateFormat("dd-MM-yyyy").parse(date);
-    String formatDate(DateTime date) => new DateFormat("yyyy-MM-dd").format(date);
+    String formatDate(DateTime date) =>
+        new DateFormat("yyyy-MM-dd").format(date);
     return formatDate(newDate);
   }
 
   static convertEventDate(String date) {
     DateTime newDate = DateFormat("dd/MM/yyyy").parse(format(date));
-    String formatDate(DateTime date) => new DateFormat("yyyy-MM-dd").format(date);
+    String formatDate(DateTime date) =>
+        new DateFormat("yyyy-MM-dd").format(date);
     return formatDate(newDate.add(Duration(days: 1)));
   }
 
@@ -483,7 +547,8 @@ class AppWidgets {
   }
 
   static Widget circleAvatar(String imageUrl, {double radius = 16.0}) {
-    return CircleAvatar(backgroundImage: NetworkImage(imageUrl), radius: radius);
+    return CircleAvatar(
+        backgroundImage: NetworkImage(imageUrl), radius: radius);
   }
 
   static String utf8convert(String text) {

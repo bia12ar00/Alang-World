@@ -50,23 +50,78 @@ class _BuyerMyProfileScreenState extends State<BuyerMyProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 8),
                           decoration: BoxDecoration(
                             color: AppColors.colorLightBlueGrey,
-                            border: Border.all(color: AppColors.colorBorder, width: 1.0),
-                            borderRadius: const BorderRadius.all(Radius.circular(8)),
+                            border: Border.all(
+                                color: AppColors.colorBorder, width: 1.0),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(8)),
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 8),
-                              Align(
-                                child: Text(
-                                  'My Profile',
-                                  style: AppFont.NUNITO_SEMI_BOLD_BLACK_24,
-                                ),
-                                alignment: Alignment.center,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text(
+                                        "My Profile",
+                                        style: TextStyle(
+                                          fontFamily: "InterMedium",
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 2,
+                                      ),
+                                      Container(
+                                        width: 62,
+                                        height: 1,
+                                        color: Colors.black,
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    height: 30,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.black,
+                                      ),
+                                      onPressed: () {
+                                        NavKey.navKey.currentState!.push(
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    BuyerEditProfileScreen(
+                                                      myProfileModel:
+                                                          myProfileModel,
+                                                    )));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Image.asset("assets/images/edit.png"),
+                                          SizedBox(
+                                            width: 4,
+                                          ),
+                                          Text(
+                                            "Edit",
+                                            style: TextStyle(
+                                              fontFamily: "InterMedium",
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                               const SizedBox(height: 16),
                               Row(
@@ -89,7 +144,8 @@ class _BuyerMyProfileScreenState extends State<BuyerMyProfileScreen> {
                                   ),
                                   const SizedBox(width: 12),
                                   Text(
-                                    myProfileModel.results!.profile!.mobile ?? "",
+                                    myProfileModel.results!.profile!.mobile ??
+                                        "",
                                     style: AppFont.NUNITO_SEMI_BOLD_BLACK_16,
                                   ),
                                 ],
@@ -109,7 +165,8 @@ class _BuyerMyProfileScreenState extends State<BuyerMyProfileScreen> {
                               ),
                               const SizedBox(height: 16),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Expanded(
                                       child: Row(
@@ -120,8 +177,11 @@ class _BuyerMyProfileScreenState extends State<BuyerMyProfileScreen> {
                                       const SizedBox(width: 12),
                                       Expanded(
                                         child: Text(
-                                          myProfileModel.results!.profile!.company ?? "",
-                                          style: AppFont.NUNITO_SEMI_BOLD_BLACK_16,
+                                          myProfileModel
+                                                  .results!.profile!.company ??
+                                              "",
+                                          style:
+                                              AppFont.NUNITO_SEMI_BOLD_BLACK_16,
                                         ),
                                       ),
                                     ],
@@ -134,8 +194,11 @@ class _BuyerMyProfileScreenState extends State<BuyerMyProfileScreen> {
                                       ),
                                       const SizedBox(width: 12),
                                       Text(
-                                        myProfileModel.results!.profile!.gender ?? "",
-                                        style: AppFont.NUNITO_SEMI_BOLD_BLACK_16,
+                                        myProfileModel
+                                                .results!.profile!.gender ??
+                                            "",
+                                        style:
+                                            AppFont.NUNITO_SEMI_BOLD_BLACK_16,
                                       ),
                                     ],
                                   ))
@@ -149,7 +212,8 @@ class _BuyerMyProfileScreenState extends State<BuyerMyProfileScreen> {
                                   ),
                                   const SizedBox(width: 12),
                                   Text(
-                                    myProfileModel.results!.profile!.address ?? "",
+                                    myProfileModel.results!.profile!.address ??
+                                        "",
                                     style: AppFont.NUNITO_SEMI_BOLD_BLACK_16,
                                   ),
                                 ],
@@ -160,18 +224,21 @@ class _BuyerMyProfileScreenState extends State<BuyerMyProfileScreen> {
                                 children: [
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'City',
-                                          style: AppFont.NUNITO_SEMI_BOLD_BLACK_16,
+                                          style:
+                                              AppFont.NUNITO_SEMI_BOLD_BLACK_16,
                                         ),
                                         const Divider(
                                           thickness: 2,
                                           endIndent: 20,
                                         ),
                                         Text(
-                                          myProfileModel.results!.profile!.district!,
+                                          myProfileModel
+                                              .results!.profile!.district!,
                                           style: AppFont.NUNITO_BOLD_BLACK_16,
                                         ),
                                       ],
@@ -179,18 +246,22 @@ class _BuyerMyProfileScreenState extends State<BuyerMyProfileScreen> {
                                   ),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'State',
-                                          style: AppFont.NUNITO_SEMI_BOLD_BLACK_16,
+                                          style:
+                                              AppFont.NUNITO_SEMI_BOLD_BLACK_16,
                                         ),
                                         const Divider(
                                           thickness: 2,
                                           endIndent: 20,
                                         ),
                                         Text(
-                                          myProfileModel.results!.profile!.state ?? "",
+                                          myProfileModel
+                                                  .results!.profile!.state ??
+                                              "",
                                           style: AppFont.NUNITO_BOLD_BLACK_16,
                                         ),
                                       ],
@@ -198,18 +269,22 @@ class _BuyerMyProfileScreenState extends State<BuyerMyProfileScreen> {
                                   ),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'Country',
-                                          style: AppFont.NUNITO_SEMI_BOLD_BLACK_16,
+                                          style:
+                                              AppFont.NUNITO_SEMI_BOLD_BLACK_16,
                                         ),
                                         const Divider(
                                           thickness: 2,
                                           endIndent: 20,
                                         ),
                                         Text(
-                                          myProfileModel.results!.profile!.country ?? "",
+                                          myProfileModel
+                                                  .results!.profile!.country ??
+                                              "",
                                           style: AppFont.NUNITO_BOLD_BLACK_16,
                                         ),
                                       ],
@@ -217,7 +292,7 @@ class _BuyerMyProfileScreenState extends State<BuyerMyProfileScreen> {
                                   )
                                 ],
                               ),
-                              const SizedBox(height: 32),
+                              const SizedBox(height: 12),
                               Align(
                                 alignment: Alignment.center,
                                 child: GestureDetector(
@@ -228,37 +303,21 @@ class _BuyerMyProfileScreenState extends State<BuyerMyProfileScreen> {
                                     child: Container(
                                       alignment: Alignment.center,
                                       height: 40,
-                                      child: MaterialButton(onPressed: null, child: Text('EDIT PROFILE', style: AppFont.NUNITO_BOLD_WHITE_24)),
+                                      child: MaterialButton(
+                                          onPressed: null,
+                                          child: Text('CHANGE PASSWORD',
+                                              style: AppFont
+                                                  .NUNITO_BOLD_WHITE_24)),
                                     ),
                                   ),
                                   onTap: () {
-                                    NavKey.navKey.currentState!.push(MaterialPageRoute(
-                                        builder: (_) => BuyerEditProfileScreen(
-                                              myProfileModel: myProfileModel,
-                                            )));
+                                    NavKey.navKey.currentState!.push(
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                const BuyerChangePasswordScreen()));
                                   },
                                 ),
                               ),
-                              const SizedBox(height: 8),
-                              Align(
-                                alignment: Alignment.center,
-                                child: GestureDetector(
-                                  child: Material(
-                                    elevation: 0.0,
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: AppColors.colorOrange,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      height: 40,
-                                      child: MaterialButton(onPressed: null, child: Text('CHANGE PASSWORD', style: AppFont.NUNITO_BOLD_WHITE_24)),
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    NavKey.navKey.currentState!.push(MaterialPageRoute(builder: (_) => const BuyerChangePasswordScreen()));
-                                  },
-                                ),
-                              ),
-                              const SizedBox(height: 32),
                             ],
                           ),
                         ),
@@ -274,7 +333,8 @@ class _BuyerMyProfileScreenState extends State<BuyerMyProfileScreen> {
 
   callMyProfileApi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
       mHomeProvider!.getUserProfile().then((value) {
         if (value != null) {
           try {

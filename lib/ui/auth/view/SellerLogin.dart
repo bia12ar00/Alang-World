@@ -8,6 +8,8 @@ import 'package:sb_portal/ui/auth/model/CommonModel.dart';
 import 'package:sb_portal/ui/auth/model/SignUpModel.dart';
 import 'package:sb_portal/ui/auth/provider/AuthProvider.dart';
 import 'package:sb_portal/ui/auth/view/SellerSignUpScreen.dart';
+import 'package:sb_portal/ui/auth/view/forgot_password_screen.dart';
+import 'package:sb_portal/ui/auth/view/send_otp.dart';
 import 'package:sb_portal/ui/dashboard/view/HomeNavigationScreen.dart';
 import 'package:sb_portal/ui/dashboard/view/sales_admin/SellerAdminHomeNavigationScreen.dart';
 import 'package:sb_portal/ui/dashboard/view/buyer/BuyerHomeScreenNavigation.dart';
@@ -44,14 +46,20 @@ class _SellerLoginState extends State<SellerLogin> {
   void initState() {
     if (PreferenceHelper.getBool(PreferenceHelper.IS_REMEBER_ME)) {
       if (widget.isFromSeller!) {
-        if (PreferenceHelper.getString(PreferenceHelper.LOGIN_TYPE) == 'seller') {
-          emailController.text = PreferenceHelper.getString(PreferenceHelper.SELLER_EMAIL_ID);
-          passwordController.text = PreferenceHelper.getString(PreferenceHelper.SELLER_PASSWORD);
+        if (PreferenceHelper.getString(PreferenceHelper.LOGIN_TYPE) ==
+            'seller') {
+          emailController.text =
+              PreferenceHelper.getString(PreferenceHelper.SELLER_EMAIL_ID);
+          passwordController.text =
+              PreferenceHelper.getString(PreferenceHelper.SELLER_PASSWORD);
         }
       } else {
-        if (PreferenceHelper.getString(PreferenceHelper.LOGIN_TYPE) == 'buyer') {
-          emailController.text = PreferenceHelper.getString(PreferenceHelper.SELLER_EMAIL_ID);
-          passwordController.text = PreferenceHelper.getString(PreferenceHelper.SELLER_PASSWORD);
+        if (PreferenceHelper.getString(PreferenceHelper.LOGIN_TYPE) ==
+            'buyer') {
+          emailController.text =
+              PreferenceHelper.getString(PreferenceHelper.SELLER_EMAIL_ID);
+          passwordController.text =
+              PreferenceHelper.getString(PreferenceHelper.SELLER_PASSWORD);
         }
       }
     } else {
@@ -86,8 +94,10 @@ class _SellerLoginState extends State<SellerLogin> {
                     ),
                     const SizedBox(height: 51),
                     widget.isFromSeller!
-                        ? Text('SELLER LOGIN', style: AppFont.NUNITO_SEMI_BOLD_BLACK_24)
-                        : Text('BUYER LOGIN', style: AppFont.NUNITO_SEMI_BOLD_BLACK_24),
+                        ? Text('SELLER LOGIN',
+                            style: AppFont.NUNITO_SEMI_BOLD_BLACK_24)
+                        : Text('BUYER LOGIN',
+                            style: AppFont.NUNITO_SEMI_BOLD_BLACK_24),
                     Container(
                       color: AppColors.colorBtnBlack,
                       width: 160,
@@ -118,7 +128,9 @@ class _SellerLoginState extends State<SellerLogin> {
                           children: [
                             InkWell(
                               child: Icon(
-                                isRemeberMe ? Icons.check_box : Icons.check_box_outline_blank,
+                                isRemeberMe
+                                    ? Icons.check_box
+                                    : Icons.check_box_outline_blank,
                               ),
                               onTap: () {
                                 setState(() {
@@ -141,7 +153,11 @@ class _SellerLoginState extends State<SellerLogin> {
                               textAlign: TextAlign.end,
                               style: AppFont.NUNITO_REGULAR_BLACK_14,
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              NavKey.navKey.currentState!.push(
+                                  MaterialPageRoute(
+                                      builder: (_) => ForgotPasswordScreen()));
+                            },
                           ),
                         ),
                       ],
@@ -155,7 +171,10 @@ class _SellerLoginState extends State<SellerLogin> {
                         child: Container(
                           alignment: Alignment.center,
                           height: 40,
-                          child: MaterialButton(onPressed: null, child: Text('LOGIN', style: AppFont.NUNITO_BOLD_WHITE_24)),
+                          child: MaterialButton(
+                              onPressed: null,
+                              child: Text('LOGIN',
+                                  style: AppFont.NUNITO_BOLD_WHITE_24)),
                         ),
                       ),
                       onTap: () {
@@ -171,12 +190,15 @@ class _SellerLoginState extends State<SellerLogin> {
                         child: Container(
                           alignment: Alignment.center,
                           height: 40,
-                          child: MaterialButton(onPressed: null, child: Text('SIGN-UP', style: AppFont.NUNITO_BOLD_WHITE_24)),
+                          child: MaterialButton(
+                              onPressed: null,
+                              child: Text('SIGN-UP',
+                                  style: AppFont.NUNITO_BOLD_WHITE_24)),
                         ),
                       ),
                       onTap: () {
                         NavKey.navKey.currentState!.push(MaterialPageRoute(
-                            builder: (_) => SellerSignUpScreen(
+                            builder: (_) => SendOtp(
                                   isFromSeller: widget.isFromSeller!,
                                 )));
                       },
@@ -218,8 +240,10 @@ class _SellerLoginState extends State<SellerLogin> {
 
   callSignInApi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
-      String? firebaseToken = await FirebaseNotificationHelper.getInstance().getFcmToken();
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      String? firebaseToken =
+          await FirebaseNotificationHelper.getInstance().getFcmToken();
       Map<String, String> body = {
         APPStrings.paramEmail: emailController.text.toString().trim(),
         APPStrings.paramPassword: passwordController.text.toString().trim(),
@@ -236,11 +260,14 @@ class _SellerLoginState extends State<SellerLogin> {
             } else {
               SignUpModel signUpModel = SignUpModel.fromJson(value);
               Fluttertoast.showToast(msg: signUpModel.message!);
-              if (signUpModel.results!.user!.userDetails!.userRole == 'sales_admin') {
+              if (signUpModel.results!.user!.userDetails!.userRole ==
+                  'sales_admin') {
                 PreferenceHelper.setBool(PreferenceHelper.IS_SIGN_IN, true);
-                PreferenceHelper.setString(PreferenceHelper.AUTH_TOKEN, signUpModel.results!.user!.userDetails!.token!);
+                PreferenceHelper.setString(PreferenceHelper.AUTH_TOKEN,
+                    signUpModel.results!.user!.userDetails!.token!);
                 if (widget.isFromSeller!) {
-                  PreferenceHelper.setBool(PreferenceHelper.IS_SELLER_SIGN_IN, true);
+                  PreferenceHelper.setBool(
+                      PreferenceHelper.IS_SELLER_SIGN_IN, true);
                   NavKey.navKey.currentState!.pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (_) => SellerAdminHomeNavigationScreen(
@@ -250,20 +277,28 @@ class _SellerLoginState extends State<SellerLogin> {
                 }
               } else {
                 PreferenceHelper.setBool(PreferenceHelper.IS_SIGN_IN, true);
-                PreferenceHelper.setString(PreferenceHelper.SELLER_ID, signUpModel.results!.user!.id!.toString());
-                PreferenceHelper.setString(PreferenceHelper.AUTH_TOKEN, signUpModel.results!.user!.userDetails!.token!);
+                PreferenceHelper.setString(PreferenceHelper.SELLER_ID,
+                    signUpModel.results!.user!.id!.toString());
+                PreferenceHelper.setString(PreferenceHelper.AUTH_TOKEN,
+                    signUpModel.results!.user!.userDetails!.token!);
                 if (isRemeberMe) {
-                  PreferenceHelper.setBool(PreferenceHelper.IS_REMEBER_ME, isRemeberMe);
-                  PreferenceHelper.setString(PreferenceHelper.SELLER_EMAIL_ID, emailController.text.toString());
-                  PreferenceHelper.setString(PreferenceHelper.SELLER_PASSWORD, passwordController.text.toString());
+                  PreferenceHelper.setBool(
+                      PreferenceHelper.IS_REMEBER_ME, isRemeberMe);
+                  PreferenceHelper.setString(PreferenceHelper.SELLER_EMAIL_ID,
+                      emailController.text.toString());
+                  PreferenceHelper.setString(PreferenceHelper.SELLER_PASSWORD,
+                      passwordController.text.toString());
                   if (widget.isFromSeller!) {
-                    PreferenceHelper.setString(PreferenceHelper.LOGIN_TYPE, 'seller');
+                    PreferenceHelper.setString(
+                        PreferenceHelper.LOGIN_TYPE, 'seller');
                   } else {
-                    PreferenceHelper.setString(PreferenceHelper.LOGIN_TYPE, 'buyer');
+                    PreferenceHelper.setString(
+                        PreferenceHelper.LOGIN_TYPE, 'buyer');
                   }
                 }
                 if (widget.isFromSeller!) {
-                  PreferenceHelper.setBool(PreferenceHelper.IS_SELLER_SIGN_IN, true);
+                  PreferenceHelper.setBool(
+                      PreferenceHelper.IS_SELLER_SIGN_IN, true);
                   NavKey.navKey.currentState!.pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (_) => HomeScreenNavigation(
@@ -271,7 +306,8 @@ class _SellerLoginState extends State<SellerLogin> {
                               )),
                       (route) => false);
                 } else {
-                  PreferenceHelper.setBool(PreferenceHelper.IS_SELLER_SIGN_IN, false);
+                  PreferenceHelper.setBool(
+                      PreferenceHelper.IS_SELLER_SIGN_IN, false);
                   NavKey.navKey.currentState!.pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (_) => BuyerHomeScreenNavigation(

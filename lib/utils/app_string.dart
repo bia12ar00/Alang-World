@@ -8,8 +8,10 @@ class APPStrings {
   //API Data
   static const String apiRegister = 'register';
   static const String apiVerifyOtp = 'verify-otp';
+  static const String sendOtp = "send_otp";
   static const String apiLogin = 'login';
   static const String apiGetPlan = 'get_plan';
+  static const String forgotPassword = "forgote_password";
   static const String apiSelectPlan = 'select_plan';
   static const String apiGetProduct = 'get_product';
   static const String apiAddProduct = 'add_product';
@@ -76,7 +78,8 @@ class APPStrings {
   static const String FORGOT_PASSWORD = "Forgot Password?";
   static const String DO_NOT_HAVE_ACCOUNT = "Don’t have an account?";
   static const String REGISTER_NOW = "Register now";
-  static const String DID_NOT_GET_THE_VERIFICATION_CODE = "Didn’t get the verification code?";
+  static const String DID_NOT_GET_THE_VERIFICATION_CODE =
+      "Didn’t get the verification code?";
   static const String RESEND_CODE = "Resend Code";
 
   static const String noInternetConnection = 'No internet connection';

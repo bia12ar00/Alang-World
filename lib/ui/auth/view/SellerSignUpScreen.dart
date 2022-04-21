@@ -8,10 +8,12 @@ import 'package:provider/provider.dart';
 import 'package:sb_portal/ui/auth/model/CommonModel.dart';
 import 'package:sb_portal/ui/auth/model/SignUpModel.dart';
 import 'package:sb_portal/ui/auth/provider/AuthProvider.dart';
+import 'package:sb_portal/ui/auth/view/SelectPlanScreen.dart';
 import 'package:sb_portal/ui/auth/view/SellerOtpVerifyScreen.dart';
 import 'package:sb_portal/ui/dashboard/model/CityModel.dart';
 import 'package:sb_portal/ui/dashboard/model/CountryModel.dart';
 import 'package:sb_portal/ui/dashboard/model/StateModel.dart';
+import 'package:sb_portal/ui/dashboard/view/buyer/BuyerHomeScreenNavigation.dart';
 import 'package:sb_portal/ui/helper/FirebaseNotificationHelper.dart';
 import 'package:sb_portal/utils/NavKey.dart';
 import 'package:sb_portal/utils/app_colors.dart';
@@ -22,10 +24,13 @@ import 'package:sb_portal/utils/app_widgets.dart';
 import 'package:sb_portal/utils/common/EmailValidator.dart';
 import 'package:sb_portal/utils/preference_helper.dart';
 
+
+
 class SellerSignUpScreen extends StatefulWidget {
   final bool? isFromSeller;
-
-  const SellerSignUpScreen({Key? key, this.isFromSeller}) : super(key: key);
+  final String? mobileNumber;
+  const SellerSignUpScreen({Key? key, this.isFromSeller, this.mobileNumber})
+      : super(key: key);
 
   @override
   _SellerSignUpScreenState createState() => _SellerSignUpScreenState();
@@ -74,9 +79,11 @@ class _SellerSignUpScreenState extends State<SellerSignUpScreen> {
   @override
   void initState() {
     callCountryListApi();
+
     genderList.add('Male');
     genderList.add('Female');
     genderList.add('Other');
+    print("Mobile:${widget.mobileNumber!}");
     super.initState();
   }
 
@@ -146,7 +153,7 @@ class _SellerSignUpScreenState extends State<SellerSignUpScreen> {
                     widget.isFromSeller! ? "Contact person name" : "Full Name",
                     false,
                     _nameFocus,
-                    _mobileFocus,
+                    _emailFocus,
                     context,
                   ),
                   const SizedBox(height: 16),
@@ -170,6 +177,7 @@ class _SellerSignUpScreenState extends State<SellerSignUpScreen> {
                       const SizedBox(width: 16),
                       Expanded(
                         child: TextFormField(
+                          readOnly: true,
                           controller: _mobileController,
                           maxLength: 10,
                           textInputAction: TextInputAction.next,
@@ -178,11 +186,10 @@ class _SellerSignUpScreenState extends State<SellerSignUpScreen> {
                           focusNode: _mobileFocus,
                           onFieldSubmitted: (term) {
                             _mobileFocus.unfocus();
-                            FocusScope.of(context).requestFocus(_emailFocus);
                           },
                           decoration: InputDecoration(
                             isDense: true,
-                            counterText: "",
+                            counterText: widget.mobileNumber!,
                             hintText: 'Mobile number',
                             hintStyle: AppFont.NUNITO_REGULAR_BLACK_14,
                             floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -602,10 +609,18 @@ class _SellerSignUpScreenState extends State<SellerSignUpScreen> {
               Fluttertoast.showToast(msg: signUpModel.message!);
               PreferenceHelper.setString(PreferenceHelper.AUTH_TOKEN,
                   signUpModel.results!.user!.userDetails!.token!);
-              NavKey.navKey.currentState!.push(MaterialPageRoute(
-                  builder: (_) => SellerOtpVerifyScreen(
-                        isFromSeller: widget.isFromSeller!,
-                      )));
+              if (widget.isFromSeller!) {
+                NavKey.navKey.currentState!.pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (_) => const SelectPlanScreen()),
+                    (route) => false);
+              } else {
+                NavKey.navKey.currentState!.pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (_) => BuyerHomeScreenNavigation(
+                              selectedIndex: 0,
+                            )),
+                    (route) => false);
+              }
             }
           } catch (ex) {
             Fluttertoast.showToast(msg: APPStrings.INTERNAL_SERVER_ISSUE);

@@ -15,7 +15,26 @@ class HomeProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> productList(String sellerId) {
     isRequestSend = true;
     notifyListeners();
-    return api.callGetMethodToken(mContext!, APPStrings.apiGetProduct + '/' + sellerId).then((value) {
+    return api
+        .callGetMethodToken(
+            mContext!, APPStrings.apiGetProduct + '/' + sellerId)
+        .then((value) {
+      isRequestSend = false;
+      notifyListeners();
+      Map<String, dynamic> data = jsonDecode(value);
+      return data;
+    }).catchError((e) {
+      isRequestSend = false;
+      notifyListeners();
+      throw e;
+    });
+  }
+
+  Future<Map<String, dynamic>> productListWithSellerId(int id) {
+    isRequestSend = true;
+    notifyListeners();
+    String url = APPStrings.apiGetProduct + "?category=${id}";
+    return api.callGetMethodToken(mContext!, url).then((value) {
       isRequestSend = false;
       notifyListeners();
       Map<String, dynamic> data = jsonDecode(value);
@@ -30,7 +49,9 @@ class HomeProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> productListWithOutSellerId() {
     isRequestSend = true;
     notifyListeners();
-    return api.callGetMethodToken(mContext!, APPStrings.apiGetProduct).then((value) {
+    return api
+        .callGetMethodToken(mContext!, APPStrings.apiGetProduct)
+        .then((value) {
       isRequestSend = false;
       notifyListeners();
       Map<String, dynamic> data = jsonDecode(value);
@@ -45,7 +66,9 @@ class HomeProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> sliders() {
     isRequestSend = true;
     notifyListeners();
-    return api.callGetMethodToken(mContext!, APPStrings.apiSliders).then((value) {
+    return api
+        .callGetMethodToken(mContext!, APPStrings.apiSliders)
+        .then((value) {
       isRequestSend = false;
       notifyListeners();
       Map<String, dynamic> data = jsonDecode(value);
@@ -57,10 +80,14 @@ class HomeProvider extends ChangeNotifier {
     });
   }
 
-  Future<Map<String, dynamic>> addProduct(Map<String, String> params, List<String> listOfImage) {
+  Future<Map<String, dynamic>> addProduct(
+      Map<String, String> params, List<String> listOfImage) {
     isRequestSend = true;
     notifyListeners();
-    return api.callPostMethodWithMultipleImage(mContext!, APPStrings.apiAddProduct, params, listOfImage).then((value) {
+    return api
+        .callPostMethodWithMultipleImage(
+            mContext!, APPStrings.apiAddProduct, params, listOfImage)
+        .then((value) {
       isRequestSend = false;
       notifyListeners();
       Map<String, dynamic> data = jsonDecode(value);
@@ -72,10 +99,14 @@ class HomeProvider extends ChangeNotifier {
     });
   }
 
-  Future<Map<String, dynamic>> editProduct(Map<String, String> params, List<String> listOfImage) {
+  Future<Map<String, dynamic>> editProduct(
+      Map<String, String> params, List<String> listOfImage) {
     isRequestSend = true;
     notifyListeners();
-    return api.callPostMethodWithMultipleImage(mContext!, APPStrings.apiEditProduct, params, listOfImage).then((value) {
+    return api
+        .callPostMethodWithMultipleImage(
+            mContext!, APPStrings.apiEditProduct, params, listOfImage)
+        .then((value) {
       isRequestSend = false;
       notifyListeners();
       Map<String, dynamic> data = jsonDecode(value);
@@ -90,7 +121,8 @@ class HomeProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> deleteProduct(String id) {
     isRequestSend = true;
     notifyListeners();
-    return api.callPostMethodWithToken(mContext!, APPStrings.apiDeleteProduct + '/' + id, {}).then((value) {
+    return api.callPostMethodWithToken(
+        mContext!, APPStrings.apiDeleteProduct + '/' + id, {}).then((value) {
       isRequestSend = false;
       notifyListeners();
       Map<String, dynamic> data = jsonDecode(value);
@@ -105,7 +137,9 @@ class HomeProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> getUserProfile() {
     isRequestSend = true;
     notifyListeners();
-    return api.callGetMethodToken(mContext!, APPStrings.apiUserProfile).then((value) {
+    return api
+        .callGetMethodToken(mContext!, APPStrings.apiUserProfile)
+        .then((value) {
       isRequestSend = false;
       notifyListeners();
       Map<String, dynamic> data = jsonDecode(value);
@@ -120,7 +154,9 @@ class HomeProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> getUserPlan() {
     isRequestSend = true;
     notifyListeners();
-    return api.callGetMethodToken(mContext!, APPStrings.apiUserPlan).then((value) {
+    return api
+        .callGetMethodToken(mContext!, APPStrings.apiUserPlan)
+        .then((value) {
       isRequestSend = false;
       notifyListeners();
       Map<String, dynamic> data = jsonDecode(value);
@@ -135,7 +171,9 @@ class HomeProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> getProductCategory() {
     isRequestSend = true;
     notifyListeners();
-    return api.callGetMethodToken(mContext!, APPStrings.apiGetProductCategory).then((value) {
+    return api
+        .callGetMethodToken(mContext!, APPStrings.apiGetProductCategory)
+        .then((value) {
       isRequestSend = false;
       notifyListeners();
       Map<String, dynamic> data = jsonDecode(value);
@@ -150,7 +188,9 @@ class HomeProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> editProfile(Map<String, dynamic> params) {
     isRequestSend = true;
     notifyListeners();
-    return api.callPostMethodWithToken(mContext!, APPStrings.apiUpdateProfile, params).then((value) {
+    return api
+        .callPostMethodWithToken(mContext!, APPStrings.apiUpdateProfile, params)
+        .then((value) {
       isRequestSend = false;
       notifyListeners();
       Map<String, dynamic> data = jsonDecode(value);
@@ -165,7 +205,9 @@ class HomeProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> contactNow(Map<String, String> params) {
     isRequestSend = true;
     notifyListeners();
-    return api.callPostMethodWithToken(mContext!, APPStrings.apiClickProduct, params).then((value) {
+    return api
+        .callPostMethodWithToken(mContext!, APPStrings.apiClickProduct, params)
+        .then((value) {
       isRequestSend = false;
       notifyListeners();
       Map<String, dynamic> data = jsonDecode(value);
