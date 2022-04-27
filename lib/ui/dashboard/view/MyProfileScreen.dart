@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -46,11 +44,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 8),
                         decoration: BoxDecoration(
                           color: AppColors.colorLightBlueGrey,
-                          border: Border.all(color: AppColors.colorBorder, width: 1.0),
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          border: Border.all(
+                              color: AppColors.colorBorder, width: 1.0),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,10 +87,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                       primary: Colors.black,
                                     ),
                                     onPressed: () {
-                                      NavKey.navKey.currentState!.push(MaterialPageRoute(
-                                          builder: (_) => EditProfileScreen(
-                                                myProfileModel: myProfileModel,
-                                              )));
+                                      NavKey.navKey.currentState!
+                                          .push(MaterialPageRoute(
+                                              builder: (_) => EditProfileScreen(
+                                                    myProfileModel:
+                                                        myProfileModel,
+                                                  )));
                                     },
                                     child: Row(
                                       children: [
@@ -120,7 +123,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                 ),
                                 const SizedBox(width: 12),
                                 Text(
-                                  myProfileModel.results!.profile!.company!,
+                                  myProfileModel.results!.profile!.company ??
+                                      "",
                                   style: TextStyle(
                                     fontFamily: "InterMedium",
                                     fontSize: 14,
@@ -138,7 +142,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                 ),
                                 const SizedBox(width: 12),
                                 Text(
-                                  myProfileModel.results!.profile!.name!,
+                                  myProfileModel.results!.profile!.name ?? "",
                                   style: TextStyle(
                                     fontFamily: "InterMedium",
                                     fontSize: 14,
@@ -156,7 +160,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                 ),
                                 const SizedBox(width: 12),
                                 Text(
-                                  myProfileModel.results!.profile!.mobile!,
+                                  myProfileModel.results!.profile!.mobile ?? "",
                                   style: TextStyle(
                                     fontFamily: "InterMedium",
                                     fontSize: 14,
@@ -174,7 +178,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                 ),
                                 const SizedBox(width: 12),
                                 Text(
-                                  myProfileModel.results!.profile!.email!,
+                                  myProfileModel.results!.profile!.email ?? "",
                                   style: TextStyle(
                                     fontFamily: "InterMedium",
                                     fontSize: 14,
@@ -192,7 +196,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                 ),
                                 const SizedBox(width: 12),
                                 Text(
-                                  myProfileModel.results!.profile!.address!,
+                                  myProfileModel.results!.profile!.address ??
+                                      "",
                                   style: TextStyle(
                                     fontFamily: "InterMedium",
                                     fontSize: 14,
@@ -229,7 +234,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                       height: 1,
                                     ),
                                     Text(
-                                      myProfileModel.results!.profile!.district!,
+                                      myProfileModel
+                                              .results!.profile!.district ??
+                                          "",
                                       style: TextStyle(
                                         fontFamily: "InterMedium",
                                         fontSize: 14,
@@ -261,7 +268,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                       height: 1,
                                     ),
                                     Text(
-                                      myProfileModel.results!.profile!.state!,
+                                      myProfileModel.results!.profile!.state ??
+                                          "",
                                       style: TextStyle(
                                         fontFamily: "InterMedium",
                                         fontSize: 14,
@@ -293,7 +301,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                       height: 1,
                                     ),
                                     Text(
-                                      myProfileModel.results!.profile!.country!,
+                                      myProfileModel
+                                              .results!.profile!.country ??
+                                          "",
                                       style: TextStyle(
                                         fontFamily: "InterMedium",
                                         fontSize: 14,
@@ -320,12 +330,19 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                         onPressed: null,
                                         child: Text(
                                           'CHANGE PASSWORD',
-                                          style: TextStyle(fontFamily: "InterMedium", fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
+                                          style: TextStyle(
+                                              fontFamily: "InterMedium",
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white),
                                         )),
                                   ),
                                 ),
                                 onTap: () {
-                                  NavKey.navKey.currentState!.push(MaterialPageRoute(builder: (_) => const SellerChangePasswordScreen()));
+                                  NavKey.navKey.currentState!.push(
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              const SellerChangePasswordScreen()));
                                 },
                               ),
                             ),
@@ -344,7 +361,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   callMyProfileApi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
       mHomeProvider!.getUserProfile().then((value) {
         if (value != null) {
           try {

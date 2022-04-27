@@ -30,7 +30,7 @@ class Results {
 
   Results.fromJson(Map<String, dynamic> json) {
     if (json['seller'] != null) {
-      seller = [];
+      seller = <Seller>[];
       json['seller'].forEach((v) {
         seller!.add(new Seller.fromJson(v));
       });
@@ -78,7 +78,7 @@ class Seller {
 class SellerDetails {
   String? userId;
   String? mobile;
-  Null? establishmentDate;
+  String? establishmentDate;
   String? gender;
   String? company;
   String? state;

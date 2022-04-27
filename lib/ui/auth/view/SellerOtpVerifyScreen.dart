@@ -11,6 +11,7 @@ import 'package:sb_portal/ui/auth/provider/AuthProvider.dart';
 import 'package:sb_portal/ui/auth/view/SelectPlanScreen.dart';
 import 'package:sb_portal/ui/auth/view/SellerSignUpScreen.dart';
 import 'package:sb_portal/ui/dashboard/view/buyer/BuyerHomeScreenNavigation.dart';
+import 'package:sb_portal/ui/dashboard/view/without_login/WithoutLoginNavigation.dart';
 import 'package:sb_portal/utils/NavKey.dart';
 import 'package:sb_portal/utils/app_colors.dart';
 import 'package:sb_portal/utils/app_font.dart';
@@ -18,11 +19,11 @@ import 'package:sb_portal/utils/app_images.dart';
 import 'package:sb_portal/utils/app_string.dart';
 
 class SellerOtpVerifyScreen extends StatefulWidget {
-  final bool? isFromSeller;
+ bool? isFromSeller;
   final String otpSession;
   final String mobile;
 
-  const SellerOtpVerifyScreen(
+   SellerOtpVerifyScreen(
       {Key? key,
       this.isFromSeller,
       required this.otpSession,
@@ -268,7 +269,7 @@ class _SellerOtpVerifyScreenState extends State<SellerOtpVerifyScreen> {
         if (value != null) {
           try {
             CommonModel streams = CommonModel.fromJson(value);
-            if (streams.response != null && streams.response == "error")  {
+            if (streams.response != null && streams.response == "error") {
               Fluttertoast.showToast(msg: streams.message);
             } else {
               CommonModel commonModel = CommonModel.fromJson(value);
@@ -276,8 +277,7 @@ class _SellerOtpVerifyScreenState extends State<SellerOtpVerifyScreen> {
 
               NavKey.navKey.currentState!.push(MaterialPageRoute(
                   builder: (_) => SellerSignUpScreen(
-                        isFromSeller: widget.isFromSeller!,
-                        mobileNumber: widget.mobile,
+                        isFromSeller: sellerLogin,
                       )));
             }
           } catch (ex) {

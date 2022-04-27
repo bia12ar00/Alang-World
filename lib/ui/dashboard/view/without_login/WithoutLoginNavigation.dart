@@ -26,6 +26,8 @@ import 'package:sb_portal/utils/app_string.dart';
 import 'package:sb_portal/utils/common/show_single_dialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
+bool sellerLogin = false;
+
 class WithOutLoginNavigation extends StatefulWidget {
   int? selectedIndex = 0;
 
@@ -304,10 +306,14 @@ class _WithOutLoginNavigationState extends State<WithOutLoginNavigation> {
                   color: AppColors.colorOrange,
                 ),
                 onTap: () {
+                  setState(() {
+                    
+                  sellerLogin = true;
+                  });
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => const SellerLogin(
+                          builder: (_) => SellerLogin(
                                 isFromSeller: true,
                               )),
                       (route) => false);
@@ -317,10 +323,14 @@ class _WithOutLoginNavigationState extends State<WithOutLoginNavigation> {
             Expanded(
               child: InkWell(
                 onTap: () {
+                  setState(() {
+                    
+                  sellerLogin = false;
+                  });
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => const SellerLogin(
+                          builder: (_) => SellerLogin(
                                 isFromSeller: false,
                               )),
                       (route) => false);

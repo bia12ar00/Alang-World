@@ -11,10 +11,12 @@ import 'package:sb_portal/utils/app_string.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_font.dart';
 
-class SendOtp extends StatefulWidget {
-  final bool? isFromSeller;
+String mobileNumber = "";
 
-  const SendOtp({Key? key, this.isFromSeller}) : super(key: key);
+class SendOtp extends StatefulWidget {
+ bool? isFromSeller;
+
+ SendOtp({this.isFromSeller});
 
   @override
   _SendOtpState createState() => _SendOtpState();
@@ -191,7 +193,9 @@ class _SendOtpState extends State<SendOtp> {
                         otpSession: value["results"]["OTPSession"],
                         mobile: _mobileController.text,
                       )));
-
+              setState(() {
+                mobileNumber = _mobileController.text;
+              });
               setState(() {});
             } else {
               Fluttertoast.showToast(msg: value["message"]);

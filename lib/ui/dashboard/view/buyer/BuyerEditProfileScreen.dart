@@ -40,6 +40,7 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
   final TextEditingController _pinCodeController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
   final FocusNode _nameFocus = FocusNode();
+
   final FocusNode _mobileFocus = FocusNode();
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _companyAddressFocus = FocusNode();
@@ -49,12 +50,14 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
 
   CountryModel countryModel = CountryModel();
   Countries? selectedCountry;
-
   StateModel stateModel = StateModel();
   States? selectedState;
-
   CityModel cityModel = CityModel();
   Cities? selectedCity;
+  String? city;
+  String? country;
+
+  String? state;
 
   List<String> genderList = [];
   String? selectGender;
@@ -64,14 +67,21 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
   @override
   void initState() {
     callCountryListApi();
-    _nameController.text = widget.myProfileModel!.results!.profile!.name!;
-    _mobileController.text = widget.myProfileModel!.results!.profile!.mobile!;
-    _emailController.text = widget.myProfileModel!.results!.profile!.email!;
+
+    _nameController.text = widget.myProfileModel!.results!.profile!.name ?? "";
+    _mobileController.text =
+        widget.myProfileModel!.results!.profile!.mobile ?? "";
+    _emailController.text =
+        widget.myProfileModel!.results!.profile!.email ?? "";
     _companyAddressController.text =
-        widget.myProfileModel!.results!.profile!.address!;
-    _pinCodeController.text = widget.myProfileModel!.results!.profile!.pincode!;
+        widget.myProfileModel!.results!.profile!.address ?? "";
+    _pinCodeController.text =
+        widget.myProfileModel!.results!.profile!.pincode ?? "";
+    country = widget.myProfileModel!.results!.profile!.country ?? "";
+    state = widget.myProfileModel!.results!.profile!.state ?? "";
+    city = widget.myProfileModel!.results!.profile!.district ?? "";
     // _dateOfBirthController.text = widget.myProfileModel!.results!.profile!.createdAt!;
-    selectGender = widget.myProfileModel!.results!.profile!.gender!;
+    selectGender = widget.myProfileModel!.results!.profile!.gender ?? "";
     genderList.add('Male');
     genderList.add('Female');
     genderList.add('Other');
@@ -199,9 +209,9 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
                   const SizedBox(height: 16),
                   countryModel.results != null
                       ? DropdownButton<Countries>(
-                          hint: selectedCountry == null
-                              ? const Text('Country')
-                              : Text(selectedCountry!.name!),
+                          hint: country == null
+                              ? const Text("Country")
+                              : Text(country!),
                           underline: Container(),
                           isExpanded: true,
                           items: countryModel.results!.countries!
@@ -231,9 +241,9 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
                         child: Column(
                           children: [
                             DropdownButton<States>(
-                              hint: selectedState == null
-                                  ? const Text('State')
-                                  : Text(selectedState!.name!),
+                              hint: state == null
+                                  ? const Text("State")
+                                  : Text(state!),
                               underline: Container(),
                               isExpanded: true,
                               items: stateModel.results == null
@@ -265,9 +275,9 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
                         child: Column(
                           children: [
                             DropdownButton<Cities>(
-                              hint: selectedCity == null
-                                  ? const Text('City')
-                                  : Text(selectedCity!.name!),
+                              hint: city == null
+                                  ? const Text("City")
+                                  : Text(city!),
                               underline: Container(),
                               isExpanded: true,
                               items: cityModel.results == null
@@ -433,11 +443,11 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
       Fluttertoast.showToast(msg: 'Please enter valid email');
     } else if (_companyAddressController.text.toString().trim().isEmpty) {
       Fluttertoast.showToast(msg: 'Please enter company address');
-    } else if (selectedCountry == null) {
+    } else if (country == null) {
       Fluttertoast.showToast(msg: 'Please select country');
-    } else if (selectedState == null) {
+    } else if (state == null) {
       Fluttertoast.showToast(msg: 'Please select state');
-    } else if (selectedCity == null) {
+    } else if (city == null) {
       Fluttertoast.showToast(msg: 'Please select city');
     } else if (_pinCodeController.text.toString().trim().isEmpty) {
       Fluttertoast.showToast(msg: 'Please enter pincode');
@@ -457,17 +467,25 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
       Map<String, String> body = {
+        APPStrings.paramCompany: _nameController.text.toString().trim(),
         APPStrings.paramName: _nameController.text.toString().trim(),
         APPStrings.paramEmail: _emailController.text.toString().trim(),
         APPStrings.paramMobile: _mobileController.text.toString(),
         APPStrings.paramPincode: _pinCodeController.text.toString().trim(),
         APPStrings.paramAddress:
             _companyAddressController.text.toString().trim(),
-        APPStrings.paramDistrict: selectedCity!.name!,
-        APPStrings.paramState: selectedState!.name!,
-        APPStrings.paramCountry: selectedCountry!.name!,
+        APPStrings.paramDistrict: selectedCity == null
+            ? widget.myProfileModel!.results!.profile!.district!
+            : selectedCity!.name!,
+        APPStrings.paramState: selectedState == null
+            ? widget.myProfileModel!.results!.profile!.state!
+            : selectedState!.name!,
+        APPStrings.paramCountry: selectedCountry == null
+            ? widget.myProfileModel!.results!.profile!.country!
+            : selectedCountry!.name!,
         APPStrings.paramEstablishmentDate:
             _dateOfBirthController.text.toString(),
+        APPStrings.paramDOb: _dateOfBirthController.text.toString(),
         APPStrings.paramGender: selectGender!,
       };
 
@@ -480,7 +498,8 @@ class _BuyerEditProfileScreenState extends State<BuyerEditProfileScreen> {
             } else {
               SignUpModel signUpModel = SignUpModel.fromJson(value);
               Fluttertoast.showToast(msg: signUpModel.message!);
-              callCountryListApi();
+              Navigator.of(context).pop();
+              //callCountryListApi();
             }
           } catch (ex) {
             Fluttertoast.showToast(msg: APPStrings.INTERNAL_SERVER_ISSUE);

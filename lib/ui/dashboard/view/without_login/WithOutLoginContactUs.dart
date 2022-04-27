@@ -67,10 +67,10 @@ class _WithOutLoginContactUsState extends State<WithOutLoginContactUs> {
                       const SizedBox(width: 8),
                       InkWell(
                         onTap: () {
-                          _openUrl('mailto:${'support@alangworld.com'}');
+                          _openUrl('mailto:${'info@alangworld.com'}');
                         },
                         child: Text(
-                            'support@alangworld.com',
+                            'info@alangworld.com',
                             style: AppFont.NUNITO_BOLD_BLACK_16
                         ),
                       ),
@@ -86,17 +86,17 @@ class _WithOutLoginContactUsState extends State<WithOutLoginContactUs> {
                       const SizedBox(width: 8),
                       InkWell(
                         onTap: () {
-                          _openUrl('tel:${'+911111111111'}');
+                          _openUrl('tel:${'+919510264074'}');
                         },
                         child: Text(
-                            '+91 1111111111',
+                            '+91 9510264074',
                             style: AppFont.NUNITO_BOLD_BLACK_16
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 64),
-                  Text('Copyright Line/Web URL', style: AppFont.NUNITO_REGULAR_DARK_BLACK_16)
+                  //Text('Copyright Line/Web URL', style: AppFont.NUNITO_REGULAR_DARK_BLACK_16)
                 ],
               ),
             ),

@@ -42,7 +42,8 @@ class AppFont {
 
   static final NUNITO_SEMI_BOLD_CHARCOAL_BLACK_16 = NUNITO_SEMI_BOLD.copyWith(
       fontSize: Dimens.text_size_16, color: AppColors.colorDarkCharcoal);
-
+static final NUNITO_SEMI_BOLD_CHARCOAL_BLACK_18 = NUNITO_SEMI_BOLD.copyWith(
+      fontSize: Dimens.text_size_18, color: AppColors.colorDarkCharcoal);
   static final NUNITO_SEMI_BOLD_CHARCOAL_BLACK_20 = NUNITO_SEMI_BOLD.copyWith(
       fontSize: Dimens.text_size_20, color: AppColors.colorDarkCharcoal);
 

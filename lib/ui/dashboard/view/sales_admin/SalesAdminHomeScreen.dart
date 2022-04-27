@@ -6,6 +6,7 @@ import 'package:sb_portal/utils/NavKey.dart';
 import 'package:sb_portal/utils/app_colors.dart';
 import 'package:sb_portal/utils/app_font.dart';
 import 'package:sb_portal/utils/app_string.dart';
+import 'package:sb_portal/utils/preference_helper.dart';
 
 import 'SellerProductListScreen.dart';
 import 'package:http/http.dart' as http;
@@ -34,6 +35,7 @@ class _SalesAdminHomeScreenState extends State<SalesAdminHomeScreen> {
       getSellerDataModel = GetSellerDataModel.fromJson(jsonValue);
       if (getSellerDataModel != null && getSellerDataModel.results != null) {
         sellerList = getSellerDataModel.results!.seller!;
+        setState(() {});
       }
     }
   }
@@ -136,9 +138,9 @@ class _SalesAdminHomeScreenState extends State<SalesAdminHomeScreen> {
               child: ListView.builder(
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return buildSellerItem();
+                  return buildSellerItem(sellerList[index]);
                 },
-                itemCount: 4,
+                itemCount: sellerList.length,
               ),
             ),
           ],
@@ -147,7 +149,7 @@ class _SalesAdminHomeScreenState extends State<SalesAdminHomeScreen> {
     );
   }
 
-  buildSellerItem() {
+  buildSellerItem(Seller data) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Container(
@@ -167,7 +169,7 @@ class _SalesAdminHomeScreenState extends State<SalesAdminHomeScreen> {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'company',
+                    data.sellerDetails!.company ?? "",
                     style: AppFont.NUNITO_SEMI_BOLD_BLACK_16,
                   ),
                 ],
@@ -180,7 +182,7 @@ class _SalesAdminHomeScreenState extends State<SalesAdminHomeScreen> {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'test',
+                    data.name ?? "",
                     style: AppFont.NUNITO_SEMI_BOLD_BLACK_16,
                   ),
                 ],
@@ -193,7 +195,7 @@ class _SalesAdminHomeScreenState extends State<SalesAdminHomeScreen> {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    '111111111111',
+                    data.sellerDetails!.mobile ?? "",
                     style: AppFont.NUNITO_SEMI_BOLD_BLACK_16,
                   ),
                 ],
@@ -206,7 +208,7 @@ class _SalesAdminHomeScreenState extends State<SalesAdminHomeScreen> {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'test@gmail.com',
+                    data.email ?? "",
                     style: AppFont.NUNITO_SEMI_BOLD_BLACK_16,
                   ),
                 ],
@@ -219,7 +221,7 @@ class _SalesAdminHomeScreenState extends State<SalesAdminHomeScreen> {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'address',
+                    data.sellerDetails!.district ?? "",
                     style: AppFont.NUNITO_SEMI_BOLD_BLACK_16,
                   ),
                 ],
@@ -227,9 +229,11 @@ class _SalesAdminHomeScreenState extends State<SalesAdminHomeScreen> {
             ],
           ),
           onTap: () {
+            PreferenceHelper.setString(
+                PreferenceHelper.SELLER_ID, data.id.toString());
             NavKey.navKey.currentState!.push(MaterialPageRoute(
-                builder: (_) => const SellerProductListScreen(
-                      sellerId: '12',
+                builder: (_) => SellerProductListScreen(
+                      sellerId: data.id ?? 0,
                     )));
           },
         ),

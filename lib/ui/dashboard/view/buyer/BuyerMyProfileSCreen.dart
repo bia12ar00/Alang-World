@@ -212,7 +212,7 @@ class _BuyerMyProfileScreenState extends State<BuyerMyProfileScreen> {
                                   ),
                                   const SizedBox(width: 12),
                                   Text(
-                                    myProfileModel.results!.profile!.address ??
+                                    myProfileModel.results!.profile!.pincode ??
                                         "",
                                     style: AppFont.NUNITO_SEMI_BOLD_BLACK_16,
                                   ),

@@ -116,7 +116,7 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
     } else if (page == 1) {
       return const AddProductScreen();
     } else if (page == 2) {
-      return const MyProfileScreen();
+      return MyProfileScreen();
     }
   }
 

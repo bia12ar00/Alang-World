@@ -306,8 +306,15 @@ class _CategoryNameScreenState extends State<CategoryNameScreen> {
                   ),
                 ),
                 onTap: () {
-                  Fluttertoast.showToast(
-                      msg: 'Please SIGN UP/SIGN IN IN BUYER');
+                  if (!PreferenceHelper.getBool(PreferenceHelper.IS_SIGN_IN)) {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => SellerLogin(
+                                  isFromSeller: false,
+                                )),
+                        (route) => false);
+                  }
                 },
               ),
               const SizedBox(width: 4),

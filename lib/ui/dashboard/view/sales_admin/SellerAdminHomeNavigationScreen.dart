@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sb_portal/ui/dashboard/view/MyProfileScreen.dart';
 import 'package:sb_portal/ui/dashboard/view/sales_admin/SalesAdminHomeScreen.dart';
 import 'package:sb_portal/ui/dashboard/view/sales_admin/SalesAdminSideMenu.dart';
 import 'package:sb_portal/utils/app_colors.dart';
@@ -8,13 +9,16 @@ import 'package:sb_portal/utils/common/show_single_dialog.dart';
 
 class SellerAdminHomeNavigationScreen extends StatefulWidget {
   int? selectedIndex = 0;
-  SellerAdminHomeNavigationScreen({Key? key, this.selectedIndex}) : super(key: key);
+  SellerAdminHomeNavigationScreen({Key? key, this.selectedIndex})
+      : super(key: key);
 
   @override
-  _SellerAdminHomeNavigationScreenState createState() => _SellerAdminHomeNavigationScreenState();
+  _SellerAdminHomeNavigationScreenState createState() =>
+      _SellerAdminHomeNavigationScreenState();
 }
 
-class _SellerAdminHomeNavigationScreenState extends State<SellerAdminHomeNavigationScreen> {
+class _SellerAdminHomeNavigationScreenState
+    extends State<SellerAdminHomeNavigationScreen> {
   int page = 0;
 
   @override
@@ -22,6 +26,7 @@ class _SellerAdminHomeNavigationScreenState extends State<SellerAdminHomeNavigat
     page = widget.selectedIndex!;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -46,7 +51,12 @@ class _SellerAdminHomeNavigationScreenState extends State<SellerAdminHomeNavigat
                         Scaffold.of(context).openDrawer();
                       },
                     ),
-                    Expanded(child: Image.asset(APPImages.IC_SPLASH_LOGO, height: 73, width: 73,)),
+                    Expanded(
+                        child: Image.asset(
+                      APPImages.IC_SPLASH_LOGO,
+                      height: 73,
+                      width: 73,
+                    )),
                     IconButton(
                       color: Colors.black,
                       icon: const Icon(Icons.notifications),
@@ -74,11 +84,17 @@ class _SellerAdminHomeNavigationScreenState extends State<SellerAdminHomeNavigat
             showUnselectedLabels: false,
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.home, size: 32,),
+                icon: Icon(
+                  Icons.home,
+                  size: 32,
+                ),
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.home, size: 32,),
+                icon: Icon(
+                  Icons.account_circle,
+                  size: 32,
+                ),
                 label: '',
               ),
             ],
@@ -91,16 +107,17 @@ class _SellerAdminHomeNavigationScreenState extends State<SellerAdminHomeNavigat
   Widget? getBody() {
     if (page == 0) {
       return const SalesAdminHomeScreen();
+    } else if (page == 1) {
+      return MyProfileScreen();
     }
   }
 
-  _onWillPop()  {
+  _onWillPop() {
     DialogSingleClick.showCustomDialog(context,
         title: 'Do you want to exit an app',
         okBtnText: 'OK',
-        cancelBtnText: 'Cancel',
-        okBtnFunction: () {
-          SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-        });
+        cancelBtnText: 'Cancel', okBtnFunction: () {
+      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    });
   }
 }

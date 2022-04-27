@@ -33,7 +33,12 @@ class _BuyerContactUsScreenState extends State<BuyerContactUsScreen> {
                       Scaffold.of(context).openDrawer();
                     },
                   ),
-                  Expanded(child: Image.asset(APPImages.IC_SPLASH_LOGO, height: 73, width: 73,)),
+                  Expanded(
+                      child: Image.asset(
+                    APPImages.IC_SPLASH_LOGO,
+                    height: 73,
+                    width: 73,
+                  )),
                   IconButton(
                     color: Colors.black,
                     icon: const Icon(Icons.notifications),
@@ -53,8 +58,11 @@ class _BuyerContactUsScreenState extends State<BuyerContactUsScreen> {
               style: AppFont.NUNITO_SEMI_BOLD_BLACK_20,
             ),
             const SizedBox(height: 32),
-            Image.asset(APPImages.IC_SPLASH_LOGO,
-              width: 150, height: 150,),
+            Image.asset(
+              APPImages.IC_SPLASH_LOGO,
+              width: 150,
+              height: 150,
+            ),
             const SizedBox(height: 32),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -65,12 +73,10 @@ class _BuyerContactUsScreenState extends State<BuyerContactUsScreen> {
                 const SizedBox(width: 8),
                 InkWell(
                   onTap: () {
-                    _openUrl('mailto:${'support@alangworld.com'}');
+                    _openUrl('mailto:${'info@alangworld.com'}');
                   },
-                  child: Text(
-                      'support@alangworld.com',
-                      style: AppFont.NUNITO_BOLD_BLACK_16
-                  ),
+                  child: Text('info@alangworld.com',
+                      style: AppFont.NUNITO_BOLD_BLACK_16),
                 ),
               ],
             ),
@@ -84,23 +90,25 @@ class _BuyerContactUsScreenState extends State<BuyerContactUsScreen> {
                 const SizedBox(width: 8),
                 InkWell(
                   onTap: () {
-                    _openUrl('tel:${'+911111111111'}');
+                    _openUrl('tel:${'+919510264074'}');
                   },
-                  child: Text(
-                      '+91 1111111111',
-                      style: AppFont.NUNITO_BOLD_BLACK_16
-                  ),
+                  child: Text('+91 9510264074',
+                      style: AppFont.NUNITO_BOLD_BLACK_16),
                 ),
               ],
             ),
             const SizedBox(height: 64),
-            Text('Copyright Line/Web URL', style: AppFont.NUNITO_REGULAR_DARK_BLACK_16)
+            //Text('Copyright Line/Web URL', style: AppFont.NUNITO_REGULAR_DARK_BLACK_16)
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           onTap: (_position) {
-            NavKey.navKey.currentState!.pushAndRemoveUntil(MaterialPageRoute(builder: (_) =>
-                BuyerHomeScreenNavigation(selectedIndex: _position,)), (route) => false);
+            NavKey.navKey.currentState!.pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (_) => BuyerHomeScreenNavigation(
+                          selectedIndex: _position,
+                        )),
+                (route) => false);
           },
           showSelectedLabels: false,
           selectedItemColor: AppColors.colorWhite,
@@ -111,15 +119,24 @@ class _BuyerContactUsScreenState extends State<BuyerContactUsScreen> {
           showUnselectedLabels: false,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home, size: 32,),
+              icon: Icon(
+                Icons.home,
+                size: 32,
+              ),
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search,  size: 32,),
+              icon: Icon(
+                Icons.search,
+                size: 32,
+              ),
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle,  size: 32,),
+              icon: Icon(
+                Icons.account_circle,
+                size: 32,
+              ),
               label: '',
             ),
           ],

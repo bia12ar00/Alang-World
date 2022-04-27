@@ -276,11 +276,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                const Icon(
-                                  FontAwesomeIcons.penToSquare,
-                                  color: Colors.white,
-                                  size: 15,
-                                ),
+                                // const Icon(
+                                //   FontAwesomeIcons.penToSquare,
+                                //   color: Colors.white,
+                                //   size: 15,
+                                // ),
                                 const SizedBox(
                                   width: 5,
                                 ),

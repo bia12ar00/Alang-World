@@ -21,9 +21,9 @@ import 'package:sb_portal/utils/app_widgets.dart';
 import 'package:sb_portal/utils/common/EmailValidator.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  final MyProfileModel? myProfileModel;
+  MyProfileModel? myProfileModel;
 
-  const EditProfileScreen({Key? key, this.myProfileModel}) : super(key: key);
+  EditProfileScreen({this.myProfileModel});
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -36,7 +36,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
-  final TextEditingController _companyAddressController = TextEditingController();
+  final TextEditingController _companyAddressController =
+      TextEditingController();
+
   final TextEditingController _pinCodeController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
   final FocusNode _nameFocus = FocusNode();
@@ -59,19 +61,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   DateTime selectedDate = DateTime.now();
   List<String> genderList = ["Male", "Female", "Other"];
-
+  String? city;
+  String? country;
+  String? state;
   @override
   void initState() {
     callCountryListApi();
-    _nameController.text = widget.myProfileModel!.results!.profile!.name!;
-    _mobileController.text = widget.myProfileModel!.results!.profile!.mobile!;
-    _emailController.text = widget.myProfileModel!.results!.profile!.email!;
-    _companyAddressController.text = widget.myProfileModel!.results!.profile!.address!;
-    _pinCodeController.text = widget.myProfileModel!.results!.profile!.pincode!;
+    _nameController.text = widget.myProfileModel!.results!.profile!.name ?? "";
+    _mobileController.text =
+        widget.myProfileModel!.results!.profile!.mobile ?? "";
+    _emailController.text =
+        widget.myProfileModel!.results!.profile!.email ?? "";
+    _companyAddressController.text =
+        widget.myProfileModel!.results!.profile!.address ?? "";
+    _pinCodeController.text =
+        widget.myProfileModel!.results!.profile!.pincode ?? "";
     if (widget.myProfileModel!.results!.profile!.establishment_date != null) {
-      _dateOfBirthController.text = widget.myProfileModel!.results!.profile!.establishment_date!;
+      _dateOfBirthController.text =
+          widget.myProfileModel!.results!.profile!.establishment_date ?? "";
     }
-    selectGender = widget.myProfileModel!.results!.profile!.gender!;
+    country = widget.myProfileModel!.results!.profile!.country ?? "";
+    state = widget.myProfileModel!.results!.profile!.state ?? "";
+    city = widget.myProfileModel!.results!.profile!.district ?? "";
+    selectGender = widget.myProfileModel!.results!.profile!.gender ?? "";
     super.initState();
   }
 
@@ -107,7 +119,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       Column(
                         children: [
-                          Text('EDIT PROFILE', style: AppFont.NUNITO_SEMI_BOLD_BLACK_24),
+                          Text('EDIT PROFILE',
+                              style: AppFont.NUNITO_SEMI_BOLD_BLACK_24),
                           Container(
                             color: AppColors.colorBtnBlack,
                             width: 160,
@@ -178,14 +191,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 focusNode: _mobileFocus,
                                 onFieldSubmitted: (term) {
                                   _mobileFocus.unfocus();
-                                  FocusScope.of(context).requestFocus(_emailFocus);
+                                  FocusScope.of(context)
+                                      .requestFocus(_emailFocus);
                                 },
                                 decoration: InputDecoration(
                                   isDense: true,
                                   counterText: "",
                                   hintText: 'Mobile number',
                                   hintStyle: AppFont.NUNITO_REGULAR_BLACK_14,
-                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
                                 ),
                               ),
                             )
@@ -204,7 +219,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         Column(
                           children: [
                             DropdownButton<String>(
-                              hint: selectGender == null ? const Text('Gender') : Text(selectGender!),
+                              hint: selectGender == null
+                                  ? const Text('Gender')
+                                  : Text(selectGender!),
                               underline: Container(),
                               isExpanded: true,
                               items: genderList.map((String value) {
@@ -237,12 +254,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         const SizedBox(height: 16),
                         DropdownButton<Countries>(
-                          hint: selectedCountry == null ? const Text('Country') : Text(selectedCountry!.name!),
+                          hint: country == null
+                              ? const Text('Country')
+                              : Text(selectedCountry!.name!),
                           underline: Container(),
                           isExpanded: true,
                           items: countryModel.results == null
                               ? []
-                              : countryModel.results!.countries!.map((Countries value) {
+                              : countryModel.results!.countries!
+                                  .map((Countries value) {
                                   return DropdownMenuItem<Countries>(
                                     value: value,
                                     child: Text(value.name!),
@@ -267,12 +287,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               child: Column(
                                 children: [
                                   DropdownButton<States>(
-                                    hint: selectedState == null ? const Text('State') : Text(selectedState!.name!),
+                                    hint: state == null
+                                        ? const Text('State')
+                                        : Text(selectedState!.name!),
                                     underline: Container(),
                                     isExpanded: true,
                                     items: stateModel.results == null
                                         ? []
-                                        : stateModel.results!.states!.map((States value) {
+                                        : stateModel.results!.states!
+                                            .map((States value) {
                                             return DropdownMenuItem<States>(
                                               value: value,
                                               child: Text(value.name!),
@@ -298,12 +321,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               child: Column(
                                 children: [
                                   DropdownButton<Cities>(
-                                    hint: selectedCity == null ? const Text('City') : Text(selectedCity!.name!),
+                                    hint: city == null
+                                        ? const Text('City')
+                                        : Text(selectedCity!.name!),
                                     underline: Container(),
                                     isExpanded: true,
                                     items: cityModel.results == null
                                         ? []
-                                        : cityModel.results!.cities!.map((Cities value) {
+                                        : cityModel.results!.cities!
+                                            .map((Cities value) {
                                             return DropdownMenuItem<Cities>(
                                               value: value,
                                               child: Text(value.name!),
@@ -353,7 +379,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 child: Column(
                                   children: [
                                     AppWidgets.buildInputFieldsWithNumber(
-                                        _dateOfBirthController, "Company Registration Date", false, _dobFocus, null, context,
+                                        _dateOfBirthController,
+                                        "Company Registration Date",
+                                        false,
+                                        _dobFocus,
+                                        null,
+                                        context,
                                         isEnable: false),
                                     Container(
                                       color: AppColors.colorBtnBlack,
@@ -378,7 +409,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             child: Container(
                               alignment: Alignment.center,
                               height: 40,
-                              child: MaterialButton(onPressed: null, child: Text('UPDATE', style: AppFont.NUNITO_BOLD_WHITE_24)),
+                              child: MaterialButton(
+                                  onPressed: null,
+                                  child: Text('UPDATE',
+                                      style: AppFont.NUNITO_BOLD_WHITE_24)),
                             ),
                           ),
                           onTap: () {
@@ -399,8 +433,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked =
-        await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(1950, 1), lastDate: DateTime.now());
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1950, 1),
+        lastDate: DateTime.now());
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -418,17 +455,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       Fluttertoast.showToast(msg: 'Please enter valid mobile number');
     } else if (_emailController.text.toString().trim().isEmpty) {
       Fluttertoast.showToast(msg: 'Please enter email');
-    } else if (!EmailValidator.validate(_emailController.text.toString().trim())) {
+    } else if (!EmailValidator.validate(
+        _emailController.text.toString().trim())) {
       Fluttertoast.showToast(msg: 'Please enter valid email');
     } else if (_companyAddressController.text.toString().trim().isEmpty) {
       Fluttertoast.showToast(msg: 'Please enter company address');
     } else if (selectGender == null) {
       Fluttertoast.showToast(msg: 'Please select gender');
-    } else if (selectedCountry == null) {
+    } else if (country == null) {
       Fluttertoast.showToast(msg: 'Please select country');
-    } else if (selectedState == null) {
+    } else if (state == null) {
       Fluttertoast.showToast(msg: 'Please select state');
-    } else if (selectedCity == null) {
+    } else if (city == null) {
       Fluttertoast.showToast(msg: 'Please select city');
     } else if (_pinCodeController.text.toString().trim().isEmpty) {
       Fluttertoast.showToast(msg: 'Please enter pincode');
@@ -443,18 +481,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   callEditProfile() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
       Map<String, String> body = {
         APPStrings.paramName: _nameController.text.toString().trim(),
         APPStrings.paramEmail: _emailController.text.toString().trim(),
         APPStrings.paramMobile: _mobileController.text.toString(),
-        APPStrings.paramCompany: widget.myProfileModel!.results!.profile!.company!,
+        APPStrings.paramCompany:
+            widget.myProfileModel!.results!.profile!.company!,
         APPStrings.paramPincode: _pinCodeController.text.toString().trim(),
-        APPStrings.paramAddress: _companyAddressController.text.toString().trim(),
+        APPStrings.paramAddress:
+            _companyAddressController.text.toString().trim(),
         APPStrings.paramDistrict: selectedCity!.name!,
         APPStrings.paramState: selectedState!.name!,
         APPStrings.paramCountry: selectedCountry!.name!,
-        APPStrings.paramEstablishmentDate: _dateOfBirthController.text.toString(),
+        APPStrings.paramEstablishmentDate:
+            _dateOfBirthController.text.toString(),
         APPStrings.paramGender: selectGender!,
       };
 
@@ -482,7 +524,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   callCountryListApi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
       mAuthProvider!.getCountryList().then((value) {
         if (value != null) {
           try {
@@ -507,8 +550,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   callStateListApi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
-      Map<String, String> body = {APPStrings.paramCountry: selectedCountry!.name!};
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      Map<String, String> body = {
+        APPStrings.paramCountry: selectedCountry!.name!
+      };
       mAuthProvider!.getStateList(body).then((value) {
         if (value != null) {
           try {
@@ -533,7 +579,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   callCityListApi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
       Map<String, String> body = {APPStrings.paramState: selectedState!.name!};
       mAuthProvider!.getCityList(body).then((value) {
         if (value != null) {

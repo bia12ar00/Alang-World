@@ -10,6 +10,7 @@ import 'package:sb_portal/ui/auth/model/SignUpModel.dart';
 import 'package:sb_portal/ui/auth/provider/AuthProvider.dart';
 import 'package:sb_portal/ui/auth/view/SelectPlanScreen.dart';
 import 'package:sb_portal/ui/auth/view/SellerOtpVerifyScreen.dart';
+import 'package:sb_portal/ui/auth/view/send_otp.dart';
 import 'package:sb_portal/ui/dashboard/model/CityModel.dart';
 import 'package:sb_portal/ui/dashboard/model/CountryModel.dart';
 import 'package:sb_portal/ui/dashboard/model/StateModel.dart';
@@ -24,13 +25,12 @@ import 'package:sb_portal/utils/app_widgets.dart';
 import 'package:sb_portal/utils/common/EmailValidator.dart';
 import 'package:sb_portal/utils/preference_helper.dart';
 
-
-
 class SellerSignUpScreen extends StatefulWidget {
-  final bool? isFromSeller;
-  final String? mobileNumber;
-  const SellerSignUpScreen({Key? key, this.isFromSeller, this.mobileNumber})
-      : super(key: key);
+ bool? isFromSeller;
+ SellerSignUpScreen({
+    Key? key,
+    this.isFromSeller,
+  }) : super(key: key);
 
   @override
   _SellerSignUpScreenState createState() => _SellerSignUpScreenState();
@@ -78,18 +78,19 @@ class _SellerSignUpScreenState extends State<SellerSignUpScreen> {
 
   @override
   void initState() {
+    //
     callCountryListApi();
-
     genderList.add('Male');
     genderList.add('Female');
     genderList.add('Other');
-    print("Mobile:${widget.mobileNumber!}");
+    //print("Mobile:${widget.mobileNumber!}");
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     mAuthProvider = Provider.of<AuthProvider>(context);
+
     return ModalProgressHUD(
       inAsyncCall: mAuthProvider!.isRequestSend,
       child: SafeArea(
@@ -189,8 +190,8 @@ class _SellerSignUpScreenState extends State<SellerSignUpScreen> {
                           },
                           decoration: InputDecoration(
                             isDense: true,
-                            counterText: widget.mobileNumber!,
-                            hintText: 'Mobile number',
+                            counterText: "",
+                            hintText: mobileNumber,
                             hintStyle: AppFont.NUNITO_REGULAR_BLACK_14,
                             floatingLabelBehavior: FloatingLabelBehavior.never,
                           ),
@@ -340,7 +341,7 @@ class _SellerSignUpScreenState extends State<SellerSignUpScreen> {
                               AppWidgets.buildInputFieldsWithNumber(
                                   _dateOfBirthController,
                                   widget.isFromSeller!
-                                      ? "Company Registration Date"
+                                      ? "Date of Birth"
                                       : "Date of Birth",
                                   false,
                                   _dobFocus,
@@ -508,9 +509,9 @@ class _SellerSignUpScreenState extends State<SellerSignUpScreen> {
       Fluttertoast.showToast(msg: 'Please enter company name');
     } else if (_nameController.text.toString().trim().isEmpty) {
       Fluttertoast.showToast(msg: 'Please enter name');
-    } else if (_mobileController.text.toString().trim().isEmpty) {
+    } else if (mobileNumber.toString().trim().isEmpty) {
       Fluttertoast.showToast(msg: 'Please enter mobile number');
-    } else if (_mobileController.text.toString().length < 10) {
+    } else if (mobileNumber.toString().length < 10) {
       Fluttertoast.showToast(msg: 'Please enter valid mobile number');
     } else if (_emailController.text.toString().trim().isEmpty) {
       Fluttertoast.showToast(msg: 'Please enter email');

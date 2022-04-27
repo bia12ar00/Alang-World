@@ -56,6 +56,8 @@ class APPStrings {
   static const String paramImage6 = 'image6';
   static const String paramId = 'id';
   static const String paramEstablishmentDate = 'establishment_date';
+    static const String paramDOb = 'date_of_birth';
+
   static const String paramGender = 'gender';
   static const String paramProductId = 'product_id';
   static const String paramBuyerId = 'buyer_id';
